@@ -90,7 +90,7 @@ Welcome to the Real-Time Chat Application! This project is a dynamic and interac
     Once you have your key, open `app.py` and replace `'YOUR_IMGBB_API_KEY_HERE'` with your actual key:
     ```python
     # ImgBB API Key
-    IMGBB_API_KEY = 'eea3c42f6a4f6a5294b7de464a744817' # Replace with your key if needed
+    IMGBB_API_KEY = 'API_KEY' # Replace with your key if needed
     ```
     *(The provided key in the source might be a placeholder or a test key. It's best practice to use your own.)*
 
