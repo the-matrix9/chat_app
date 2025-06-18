@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        /* Override base.html gradient for login page */
+        background: #f0f2f5 !important; /* Light gray, common for WhatsApp-like UIs */
+        margin: 0;
+        padding: 0;
+        min-height: 100vh; /* Ensure background covers full height, allow scrolling */
+        display: flex;
+        flex-direction: column; /* Helps in structuring content vertically */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Ensure font consistency */
+    }
+    .login-page-wrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1; /* Allows wrapper to take up available space, useful for footer or centering */
+        /* overflow-y: auto; /* Removed, body will handle scrolling */
+    }
+    .login-header {
+        background-color: #005E54; /* WhatsApp dark green header */
+        min-height: 225px; /* Minimum height for the green bar */
+        display: flex;
+        align-items: flex-start; /* Align content to the top of the header */
+        padding: 40px 0; /* Vertical padding, horizontal will be by margin of inner div */
+    }
+    .login-header .logo-and-title {
+        display: flex;
+        align-items: center;
+        margin-left: 15%; /* Indent from left */
+        color: white;
+    }
+    .login-header .logo-and-title .fab.fa-whatsapp {
+        font-size: 38px;
+        margin-right: 15px;
+    }
+    .login-header .logo-and-title h1 {
+        font-size: 20px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin: 0; /* Remove default margin from h1 */
+    }
+    .login-form-card {
+        max-width: 420px;
+        width: 90%; /* Responsive width */
+        margin: -120px auto 50px auto; /* Negative top margin to overlap header */
+        padding: 40px;
+        background: white;
+        border-radius: 3px; /* Subtle border radius */
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08); /* Softer shadow */
+        position: relative; /* For z-index stacking */
+        z-index: 10;
+    }
+    .login-form-card h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #111b21; /* WhatsApp dark text */
+        font-size: 22px;
+        font-weight: 300; /* Lighter title */
+    }
+    .login-form-card .form-group {
+        margin-bottom: 20px; /* Consistent spacing */
+    }
+    .login-form-card .form-group label {
+        font-weight: 600;
+        color: #3b4a54; /* WhatsApp text color */
+        font-size: 14px;
+        margin-bottom: 8px;
+        display: block;
+    }
+    .login-form-card .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #d0d2d3; /* Light gray border */
+        border-radius: 3px;
+        font-size: 15px;
+        box-sizing: border-box; /* Include padding and border in element's total width and height */
+    }
+    .login-form-card .form-group input:focus {
+        outline: none;
+        border-color: #00a884; /* WhatsApp green focus */
+        box-shadow: 0 0 0 2px rgba(0, 168, 132, 0.25); /* Focus ring */
+    }
+    .login-form-card .btn {
+        width: 100%;
+        background: #00a884; /* WhatsApp primary green */
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 3px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-transform: none; /* Default case for button text */
+    }
+    .login-form-card .btn:hover {
+        background: #00876B; /* Darker green on hover */
+    }
+    .login-form-card .btn-secondary {
+        background: transparent;
+        color: #00a884; /* Green text */
+        border: 1px solid #00a884; /* Green border */
+        margin-top: 15px; /* Space above secondary button */
+    }
+    .login-form-card .btn-secondary:hover {
+        background: rgba(0, 168, 132, 0.05); /* Subtle green background on hover */
+    }
+    .login-form-card .fas, .login-form-card .fab { /* Style for Font Awesome icons */
+        margin-right: 10px;
+    }
+</style>
+
+<div class="login-page-wrapper">
+    <div class="login-header">
+        <div class="logo-and-title">
+            <i class="fab fa-whatsapp"></i> <!-- WhatsApp Icon -->
+            <h1>Chat App</h1>
+        </div>
+    </div>
+
+    <div class="login-form-card">
+        <h2>Login to Chat App</h2>
+        
+        <form method="POST" action="{{ url_for('login') }}">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <button type="submit" class="btn">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+        </form>
+        
+        <a href="{{ url_for('register') }}">
+            <button type="button" class="btn btn-secondary">
+                <i class="fas fa-user-plus"></i> Register New Account
+            </button>
+        </a>
+    </div>
+</div>
+{% endblock %}

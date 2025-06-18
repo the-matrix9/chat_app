@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        background: #f0f2f5 !important; /* Light gray background, consistent with login */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh; /* Ensure background covers full height, allow scrolling */
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    .profile-page-wrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1; /* Allows wrapper to take up available space */
+        padding: 20px 0; /* Add some padding at the top and bottom of the wrapper */
+    }
+    .profile-main-card {
+        width: 100%; /* Card takes full width of its parent (.profile-page-wrapper) */
+        max-width: 900px; /* Max width for desktop readability */
+        margin: 0 auto; /* Center the card within the .profile-page-wrapper */
+        /* flex-grow: 1; /* Not strictly necessary if wrapper handles overall page flow */
+        display: flex;
+        flex-direction: column;
+        background: white;
+        border-radius: 3px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+    .profile-page-header {
+        background-color: #008069; /* WhatsApp green header */
+        color: white;
+        padding: 20px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .profile-page-header h1 {
+        font-size: 20px;
+        font-weight: 500;
+        margin: 0;
+    }
+    .profile-page-header .nav-links a {
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+        font-size: 14px;
+        opacity: 0.9;
+        transition: opacity 0.2s;
+    }
+    .profile-page-header .nav-links a:hover {
+        opacity: 1;
+    }
+    .profile-page-header .nav-links .fas {
+        margin-right: 6px;
+    }
+    .profile-content-area {
+        padding: 30px;
+    }
+
+    /* User Info Section */
+    .profile-user-info {
+        display: flex;
+        align-items: center;
+        gap: 25px; /* Slightly reduced gap */
+        margin-bottom: 30px;
+        padding-bottom: 25px;
+        border-bottom: 1px solid #e9edef; /* Light separator */
+    }
+    .profile-user-info .avatar-container {
+        position: relative;
+        cursor: pointer;
+    }
+    .profile-user-info .avatar-container img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #e0e0e0; /* Slightly darker border for better visibility on white */
+    }
+    .profile-user-info .avatar-container .avatar-overlay {
+        position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.4); border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; transition: opacity 0.3s; color: white; font-size: 20px;
+    }
+    .profile-user-info .avatar-container:hover .avatar-overlay { opacity: 1; }
+    .profile-user-info .avatar-container .avatar-overlay .fas { font-size: 24px; }
+
+    .profile-user-info .details h2 {
+        margin: 0 0 5px 0; font-size: 22px; color: #111b21; font-weight: 500;
+    }
+    .profile-user-info .details .username-tag {
+        font-size: 15px; color: #54656f; margin-bottom: 8px;
+    }
+    .profile-user-info .details .join-date-info {
+        font-size: 13px; color: #667781;
+    }
+    .profile-user-info .details .join-date-info .fas {
+        margin-right: 5px;
+    }
+
+    /* Form and Stats Sections */
+    .profile-section {
+        margin-bottom: 30px;
+    }
+    .profile-section h3 {
+        font-size: 16px;
+        color: #008069; /* Green section titles */
+        margin: 0 0 20px 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e9edef;
+        font-weight: 500;
+    }
+    .profile-section h3 .fas {
+        margin-right: 8px;
+    }
+    .profile-section .form-group { margin-bottom: 20px; }
+    .profile-section .form-group label {
+        display: block; margin-bottom: 8px; font-weight: 500; color: #3b4a54; font-size: 14px;
+    }
+    .profile-section .form-group input[type="text"],
+    .profile-section .form-group input[type="file"] {
+        width: 100%; padding: 10px 12px; border: 1px solid #d0d2d3;
+        border-radius: 3px; font-size: 15px; box-sizing: border-box;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .profile-section .form-group input[type="text"]:focus {
+        outline: none; border-color: #00a884; box-shadow: 0 0 0 1px #00a884;
+    }
+    .profile-section .form-group input[type="file"] {
+        padding: 8px 12px; background: #f0f2f5;
+    }
+    .profile-section .form-help {
+        font-size: 12px; color: #667781; margin-top: 5px;
+    }
+    .profile-section .btn-update-profile {
+        background: #00a884; color: white; padding: 10px 20px;
+        border: none; border-radius: 3px; font-size: 14px; font-weight: 600;
+        cursor: pointer; transition: background-color 0.3s;
+        display: inline-flex; align-items: center;
+    }
+    .profile-section .btn-update-profile:hover { background: #00876B; }
+    .profile-section .btn-update-profile .fas { margin-right: 8px; }
+
+    /* Stats Grid */
+    .stats-grid-container {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px;
+    }
+    .stat-item-card {
+        text-align: center; padding: 20px 15px; background: #f7f8fa;
+        border-radius: 3px; border: 1px solid #e9edef;
+    }
+    .stat-item-card .stat-value {
+        font-size: 24px; font-weight: 600; color: #111b21; margin-bottom: 5px;
+    }
+    .stat-item-card .stat-description {
+        font-size: 13px; color: #54656f; text-transform: capitalize;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .profile-page-wrapper { 
+            padding: 0; /* Remove padding for full screen on mobile */
+        }
+        .profile-main-card { 
+            border-radius: 0; 
+            box-shadow: none; 
+            margin: 0; /* Card takes full space in wrapper on mobile */
+            /* height: 100%; /* Let content define height, wrapper handles scroll */
+        }
+        .profile-page-header { padding: 15px; border-radius:0; flex-direction: column; gap: 10px; }
+        .profile-page-header h1 { font-size: 18px; }
+        .profile-page-header .nav-links { display: flex; gap: 15px; margin-left: 0; }
+        .profile-page-header .nav-links a { font-size: 13px; margin-left: 0px; }
+        .profile-content-area { padding: 20px; }
+        .profile-user-info { flex-direction: column; text-align: center; gap: 15px; }
+        .profile-user-info .avatar-container img { width: 80px; height: 80px; }
+        .stats-grid-container { grid-template-columns: 1fr; } /* Stack stats on small screens */
+    }
+</style>
+
+<div class="profile-page-wrapper">
+    <div class="profile-main-card">
+        <div class="profile-page-header">
+            <h1><i class="fas fa-user-circle"></i> My Profile</h1>
+            <div class="nav-links">
+                <a href="{{ url_for('chat') }}"><i class="fas fa-comments"></i> Chat</a>
+                <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+
+        <div class="profile-content-area">
+            <div class="profile-user-info">
+                <div class="avatar-container">
+                    <img src="{{ user.profile_photo or url_for('static', filename='default_avatar_new.png') }}" alt="Profile Photo" id="profilePreview">
+                    <div class="avatar-overlay"><i class="fas fa-camera"></i></div>
+                </div>
+                <div class="details">
+                    <h2>{{ user.name or username }}</h2>
+                    <p class="username-tag">@{{ username }}</p>
+                    <p class="join-date-info">
+                        <i class="fas fa-calendar-alt"></i>
+                        Joined: {{ user.created_at[:10] if user.created_at else 'Not available' }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="profile-section profile-edit-form">
+                <h3><i class="fas fa-pencil-alt"></i> Edit Your Profile</h3>
+                <form method="POST" action="{{ url_for('update_profile') }}" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="name">Display Name</label>
+                        <input type="text" id="name" name="name" value="{{ user.name or username }}" required maxlength="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="profile_photo">Change Profile Photo</label>
+                        <input type="file" id="profile_photo" name="profile_photo" accept="image/*,.heic,.heif">
+                        <small class="form-help">Supported: JPG, PNG, GIF, HEIC, HEIF. Max 16MB.</small>
+                    </div>
+                    <button type="submit" class="btn-update-profile">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </form>
+            </div>
+
+            <div class="profile-section profile-stats-section">
+                <h3><i class="fas fa-chart-line"></i> Your Activity</h3>
+                <div class="stats-grid-container">
+                    <div class="stat-item-card">
+                        <div class="stat-value" id="totalMessages">0</div>
+                        <div class="stat-description">Messages Sent</div>
+                    </div>
+                    <div class="stat-item-card">
+                        <div class="stat-value" id="totalChats">0</div>
+                        <div class="stat-description">Active Chats</div>
+                    </div>
+                    <div class="stat-item-card">
+                        <div class="stat-value" id="onlineTime">0h</div>
+                        <div class="stat-description">Online Today</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Script for image preview
+const profilePhotoInput = document.getElementById('profile_photo');
+const profilePreview = document.getElementById('profilePreview');
+const avatarContainer = document.querySelector('.profile-user-info .avatar-container');
+
+if (profilePhotoInput && profilePreview) {
+    profilePhotoInput.addEventListener('change', function(event) {
+        if (event.target.files && event.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                profilePreview.src = e.target.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    });
+}
+
+// Click avatar to trigger file input
+if (avatarContainer && profilePhotoInput) {
+    avatarContainer.addEventListener('click', function() {
+        profilePhotoInput.click();
+    });
+}
+
+// Load profile statistics (simulated)
+document.addEventListener('DOMContentLoaded', function() {
+    function loadProfileStats() {
+        setTimeout(() => {
+            const totalMessagesEl = document.getElementById('totalMessages');
+            const totalChatsEl = document.getElementById('totalChats');
+            const onlineTimeEl = document.getElementById('onlineTime');
+
+            if (totalMessagesEl) totalMessagesEl.textContent = Math.floor(Math.random() * 1000);
+            if (totalChatsEl) totalChatsEl.textContent = Math.floor(Math.random() * 20);
+            if (onlineTimeEl) onlineTimeEl.textContent = Math.floor(Math.random() * 8) + 'h';
+        }, 500);
+    }
+    loadProfileStats();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,1245 @@
+{
+  "chamika_johndoe2": [
+    {
+      "id": "9548c954-55c5-4a44-a0da-92c3b40ee1ad",
+      "sender": "chamika",
+      "receiver": "johndoe2",
+      "message": "Hi",
+      "type": "text",
+      "timestamp": "2025-06-17T14:48:02.577091",
+      "read": false
+    }
+  ],
+  "admin_chamika": [
+    {
+      "id": "0ff153da-bb1c-4cad-80ff-a8bdc7bbfc14",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "hi",
+      "type": "text",
+      "timestamp": "2025-06-17T09:50:16.466796",
+      "read": true
+    },
+    {
+      "id": "6bc0aaac-c602-4f6a-88c7-6125c9e6d935",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "ehd",
+      "type": "text",
+      "timestamp": "2025-06-17T11:21:12.549849",
+      "read": true
+    },
+    {
+      "id": "f8fccdee-eaa4-4893-a7dc-4b966c9c82df",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "dfhd",
+      "type": "text",
+      "timestamp": "2025-06-17T11:22:15.389641",
+      "read": true
+    },
+    {
+      "id": "3a0a44a8-7fa4-44e8-a608-f7c4c941e220",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "T ටීටීටී",
+      "type": "text",
+      "timestamp": "2025-06-17T11:22:27.257847",
+      "read": true
+    },
+    {
+      "id": "e8e20eb8-917c-4d7b-a5a1-0ced159a4e23",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "gf",
+      "type": "text",
+      "timestamp": "2025-06-17T11:24:28.224888",
+      "read": true
+    },
+    {
+      "id": "072d006a-de31-4f53-a0df-37f6d4786347",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "Hj",
+      "type": "text",
+      "timestamp": "2025-06-17T11:25:26.392497",
+      "read": true
+    },
+    {
+      "id": "87c3a446-3f31-46b4-803b-a9c24cf8c1f9",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "Sufda",
+      "type": "text",
+      "timestamp": "2025-06-17T11:37:57.764380",
+      "read": true
+    },
+    {
+      "id": "3e0f3481-b599-439d-875c-c7710ae40e55",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "Hey",
+      "type": "text",
+      "timestamp": "2025-06-17T14:46:36.911173",
+      "read": true
+    },
+    {
+      "id": "ae605a2c-8d79-4564-9a0f-69c9728b6246",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "Kohomada",
+      "type": "text",
+      "timestamp": "2025-06-17T14:46:52.550500",
+      "read": true
+    },
+    {
+      "id": "6ca52945-6876-4486-930c-af4fa92b38fa",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "Heytt",
+      "type": "text",
+      "timestamp": "2025-06-17T14:48:32.172341",
+      "read": true
+    },
+    {
+      "id": "683fabe2-72f2-412a-bd61-975563464546",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "😀",
+      "type": "text",
+      "timestamp": "2025-06-17T14:48:35.172390",
+      "read": true
+    },
+    {
+      "id": "93d8e032-7960-4717-a719-19d1c336cb42",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "Ksnsjs",
+      "type": "text",
+      "timestamp": "2025-06-17T14:48:37.372174",
+      "read": true
+    },
+    {
+      "id": "a70b1701-e398-4f9e-a0a9-625cd3a96c8f",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "Sjjqjsks",
+      "type": "text",
+      "timestamp": "2025-06-17T14:48:39.692585",
+      "read": true
+    },
+    {
+      "id": "d258bcee-32e5-4224-a935-f6580a8072e9",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "Jsjsjs",
+      "type": "text",
+      "timestamp": "2025-06-17T14:48:41.662252",
+      "read": true
+    },
+    {
+      "id": "20989c0f-930b-4f83-97e3-8326eed5a697",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "/static/chat_media/f80f8b53-0181-4704-8102-ef857c519657.jpg",
+      "type": "image",
+      "original_filename": "315162417_1562027450929375_2361590331419924652_n.jpg",
+      "timestamp": "2025-06-18T05:31:21.157692",
+      "read": true
+    },
+    {
+      "id": "ad0e03c0-ddb7-499d-b7ab-b8e429200cb2",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "/static/chat_media/5e01f6b9-7f3a-4681-a4a4-b8b83a3f04e2.jpg",
+      "type": "image",
+      "original_filename": "IMG-20250618-WA0000.jpg",
+      "timestamp": "2025-06-18T05:33:21.109194",
+      "read": true
+    },
+    {
+      "id": "1065da66-6246-4ecd-a65c-e209c4159d5f",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "/static/chat_media/c2740f39-b2b3-46ff-9da2-fc70cd34fd40.ogg",
+      "type": "audio",
+      "original_filename": "fblite_incoming_call_new.ogg",
+      "timestamp": "2025-06-18T05:33:55.999647",
+      "read": true
+    },
+    {
+      "id": "e8861c84-901a-4e64-bfdf-97f448146a7e",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "Gjk",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T05:36:20.118015",
+      "read": true
+    },
+    {
+      "id": "a2dcc008-42d5-4a36-b13e-59f792359078",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "/static/chat_media/40c99a65-4e91-4c49-9da9-e776acf62240.jpg",
+      "type": "image",
+      "original_filename": "IMG-20250618-WA0019.jpg",
+      "timestamp": "2025-06-18T05:40:13.276095",
+      "read": true
+    },
+    {
+      "id": "3618ddf7-1f25-4993-8226-eaf69dad44a2",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "/static/chat_media/b4a60b88-e015-4ded-b36b-72d35fa8962c.jpg",
+      "type": "image",
+      "original_filename": "IMG-20250618-WA0020.jpg",
+      "timestamp": "2025-06-18T05:43:39.692931",
+      "read": true
+    },
+    {
+      "id": "a5d0e5cc-9593-449b-a6de-0e5f2bc3e457",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "/static/chat_media/f6133ba2-aa9d-44d9-976c-b32bb33d45a9.ogg",
+      "type": "audio",
+      "original_filename": "Nudge.ogg",
+      "timestamp": "2025-06-18T05:45:41.331021",
+      "read": true
+    },
+    {
+      "id": "0a480225-8eb5-45f5-9be6-dfe58bc55dc6",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "/static/chat_media/d735d2a4-e0dd-4bb6-945d-37f08afd0707.jpg",
+      "type": "image",
+      "original_filename": "b31399b0-a191-4352-9ad6-ba7f62630afb.jpg",
+      "timestamp": "2025-06-18T05:47:03.973229",
+      "read": true
+    },
+    {
+      "id": "e85bd1eb-6b4c-4995-9375-5bf93301fa86",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "/static/chat_media/ccf45b18-9a47-4544-b7b4-138bcd7243d8.png",
+      "type": "image",
+      "original_filename": "ChatGPT Image Apr 3, 2025, 12_50_45 AM.png",
+      "timestamp": "2025-06-18T05:54:34.478746",
+      "read": true
+    },
+    {
+      "id": "008100f8-99cd-4fa4-a674-f7d23795ee0a",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "/static/chat_media/940d6b64-2d4a-4ab0-abd7-9cf967718667.mp4",
+      "type": "video",
+      "original_filename": "video.mp4",
+      "timestamp": "2025-06-18T05:55:18.737392",
+      "read": true
+    },
+    {
+      "id": "f802f554-529b-4079-84fd-ca392a00b023",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "/static/chat_media/a1092ad0-ef69-46f9-b10d-9377d025491c.jpg",
+      "type": "image",
+      "original_filename": "1750226171637.jpg",
+      "timestamp": "2025-06-18T05:56:28.902544",
+      "read": true
+    },
+    {
+      "id": "45ad25a8-b714-4dd8-b4de-ed208d8e6aa3",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "/static/chat_media/0a91f4d8-c41b-445d-a65e-b9b605bfaee4.pdf",
+      "type": "file",
+      "original_filename": "grade-7-history-text-book-61fa0ff6c7cd4.pdf",
+      "timestamp": "2025-06-18T05:57:03.573991",
+      "read": true
+    },
+    {
+      "id": "39cc860c-59b2-4811-85ee-49251a0a3374",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "/static/chat_media/c2c3cc69-1eea-41f9-ab0d-af22e006c5cf.mp4",
+      "type": "video",
+      "original_filename": "_03s__202506151226_sfbh7.mp4",
+      "timestamp": "2025-06-18T06:06:53.021219",
+      "read": true,
+      "clientUploadId": "upload-1750226809285-5spdi"
+    },
+    {
+      "id": "a53c59e2-c95e-4076-be68-09f7659e927c",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "hiiii",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T06:31:55.376576",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "7a2bb2b8-e05d-4f8f-a3b8-314d71b2fdb1",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "Hua",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T06:32:42.377832",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "0e317d04-321e-4f36-84cf-8f9f67a75588",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "/static/chat_media/7423e1c8-9637-4102-a228-5b32cb617809.jpg",
+      "type": "image",
+      "original_filename": "IMG-20250618-WA0009.jpg",
+      "timestamp": "2025-06-18T06:32:55.541347",
+      "read": true,
+      "clientUploadId": "upload-1750228374367-nm423"
+    },
+    {
+      "id": "cb5e0d6e-3e3e-4ca0-8328-a9ddcb862299",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "/static/chat_media/a7a2a2aa-67c0-4c62-ac4c-dffb59af3508.jpg",
+      "type": "image",
+      "original_filename": "1750228384385.jpg",
+      "timestamp": "2025-06-18T06:33:21.881920",
+      "read": true,
+      "clientUploadId": "upload-1750228393150-kuc2p"
+    },
+    {
+      "id": "5ea8634c-2400-49e1-9972-5a64ec90eb09",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "/static/chat_media/60e7bac3-d3a5-4765-b5af-b4ecf8976627.mp3",
+      "type": "audio",
+      "original_filename": "AUD-20250616-WA0094.mp3",
+      "timestamp": "2025-06-18T06:33:42.481282",
+      "read": true,
+      "clientUploadId": "upload-1750228417701-yevto"
+    },
+    {
+      "id": "b0a63456-885b-4494-b682-426deffcbc28",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "/static/chat_media/096fc817-426d-4860-a2c7-d33b11a1bde2.mp4",
+      "type": "video",
+      "original_filename": "65K_views_·_2.1K_reactions_එකපාරකට_වඩා_බලන්න_එපා_😁_𝗖𝗿𝘂𝘀𝗵.mp4",
+      "timestamp": "2025-06-18T06:34:03.901634",
+      "read": true,
+      "clientUploadId": "upload-1750228436327-jmawl"
+    },
+    {
+      "id": "57a3cdca-38a5-4d30-99f9-08ff2522e3a8",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "ssh",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T06:37:04.963278",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "0e6a3a9a-770e-4964-9cc4-b8a9e871d764",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "/static/chat_media/278e3a29-86e8-49a1-b820-36195f6e5307.jpeg",
+      "type": "image",
+      "original_filename": "ac620737-de55-46ed-a129-053cb31cc7c2.jpeg",
+      "timestamp": "2025-06-18T06:37:11.465073",
+      "read": true,
+      "clientUploadId": "upload-1750228630362-mzkq3"
+    },
+    {
+      "id": "74f4d797-9473-4ae1-86a6-a9a63f3bd1c5",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "Fgh",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T06:37:43.222604",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "42dc1044-a836-484e-bf1c-eaa8135c8be0",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "sdfdf",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T06:42:42.175964",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "dd350744-ae30-4617-b154-86d92a5d94d3",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "Machan",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T06:42:57.328684",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "6bfc7d53-0496-42ea-9cb1-75457172527a",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "Hyau",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T06:43:02.244200",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "108cd42a-8972-4388-b79a-3f78f0c09e3e",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "Jsjs",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T06:53:04.024097",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "07e70fea-8677-4d38-9091-8fb14ccc40e1",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "Jbb",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T06:53:07.760258",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "d0f5ceaf-fedf-418b-9cb6-e3a9e651deb1",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "Jbbhh",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T06:53:17.427907",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "82aa008f-94e6-43c6-8b26-672c6ac6f114",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "Bnjj",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T06:53:22.227950",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "8661847a-a85a-431c-b171-081fcf0ee430",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "/static/chat_media/65c65f92-38f6-4032-bb0b-3900d51f73d4.mp4",
+      "type": "video",
+      "original_filename": "_03s__202506151226_sfbh7.mp4",
+      "timestamp": "2025-06-18T17:57:11.679915",
+      "read": false,
+      "clientUploadId": "upload-1750249631661-9iq3c"
+    }
+  ],
+  "Ishan_johndoe2": [
+    {
+      "id": "8972ce69-b2b5-4996-9701-554de3e3d54c",
+      "sender": "Ishan",
+      "receiver": "johndoe2",
+      "message": "Hey dude",
+      "type": "text",
+      "timestamp": "2025-06-17T09:54:43.802957",
+      "read": false
+    },
+    {
+      "id": "84f12598-ab6d-4f73-a139-4dc2ed38c526",
+      "sender": "Ishan",
+      "receiver": "johndoe2",
+      "message": "🥰",
+      "type": "text",
+      "timestamp": "2025-06-17T09:55:07.411156",
+      "read": false
+    }
+  ],
+  "Ishan_chamika": [
+    {
+      "id": "745d2c6f-8eb2-4970-bba5-792ad941db9b",
+      "sender": "Ishan",
+      "receiver": "chamika",
+      "message": "Hey",
+      "type": "text",
+      "timestamp": "2025-06-17T09:54:54.870323",
+      "read": true
+    }
+  ],
+  "chamika_kavindu": [
+    {
+      "id": "12f94f1e-e312-4a2a-aca2-8d567c2836fe",
+      "sender": "kavindu",
+      "receiver": "chamika",
+      "message": "hey",
+      "type": "text",
+      "timestamp": "2025-06-17T11:10:43.302832",
+      "read": true
+    },
+    {
+      "id": "4f4fec2a-d3a4-46ce-b508-f634dd398f7c",
+      "sender": "chamika",
+      "receiver": "kavindu",
+      "message": "Heyyy",
+      "type": "text",
+      "timestamp": "2025-06-17T11:11:28.773497",
+      "read": true
+    }
+  ],
+  "Pro_chamika": [
+    {
+      "id": "e346dfe5-e5bd-48d7-a469-fde35ad9c3fa",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "Hii",
+      "type": "text",
+      "timestamp": "2025-06-17T11:11:46.497403",
+      "read": true
+    },
+    {
+      "id": "5142ac08-0034-4fe8-b713-c6ddb649699d",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Hiii",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T07:09:01.647177",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "1ffbfa9f-0efd-4d95-9fb2-c77edbf183c6",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "Hii",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:30:47.231195",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "33e68801-deed-4a75-969c-2a532b4c8f3c",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "What's up",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:45:20.436879",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "3f385bec-4378-42c8-80b9-de9e9ce04907",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Hey bro need to check calling",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:45:57.851900",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "e47c6eb8-ed02-423c-8f67-fba676e13515",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "Yeah",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:46:17.213981",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "7badef0d-eb7c-48d8-9cba-26100bea4c0c",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Reject call",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:46:47.234140",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "fcd4a2a2-880e-4983-9470-c7f6ad299b74",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Can you get a call",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:46:52.568240",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "82ddd6e6-c730-4c74-8ad2-3d4365f47d2d",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Noe",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:46:56.938428",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "5c18f00a-412c-435a-8049-a838c5965156",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "Yeah",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:46:58.470746",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "0adcaf48-892e-4379-80bd-d22d592c0cc1",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Ok",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:47:01.058363",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "897265bb-5065-48a0-a1bd-8ccb23884256",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "But not working",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:47:10.053061",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "dbba4798-97b7-4819-af81-de9939224c6c",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Hey",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:47:37.187849",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "b23f4367-e657-485b-aa8a-9088629dd73a",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "Work or not",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:47:44.521368",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "bd484209-72ac-4d30-a63b-107e7507ffd9",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Did you hear?",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:47:51.687120",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "b15d9fad-2644-4fd8-95b3-61c6d330a196",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Call connected",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:47:56.887154",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "313c90da-fa6c-4bb7-ac28-5a79e4045c2d",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "No",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:47:58.360894",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "97a1858f-f663-4b46-b481-16efcc71450f",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "Connect but not hearing",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:48:07.051354",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "d4cf1613-d5b9-42c1-9d67-d905b159042b",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Ok I'll call answer and say me hello",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:48:11.298821",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "7106738c-222f-4fda-a46e-3841b6cbbacd",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Bro clear browser data",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:48:37.067166",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "a5169c26-15d0-463f-99a5-390e761aeddf",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Login again",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:48:40.747952",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "72639a68-61e0-4ab6-92bd-29aa8bd64c8e",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "Wait",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:48:42.944348",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "7583baa1-8c42-4bcc-a629-04adf7ad0ca9",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Allow permissions",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:48:47.259640",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "21cb1bed-1b9e-4050-a298-2fe52d44028a",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "Already have",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:49:07.819366",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "9958e8be-2400-45bd-9a58-fa729d253156",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "Work",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:49:45.451914",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "1d8ce58a-5c40-430d-a430-fc4a0ff5dce7",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "/static/chat_media/e40707fa-516e-45de-9867-4b99166ba219.jpg",
+      "type": "image",
+      "original_filename": "Screenshot_2025-06-18-15-19-38-365_com.duckduckgo.mobile.android.jpg",
+      "timestamp": "2025-06-18T09:49:47.799473",
+      "read": true,
+      "clientUploadId": "upload-1750240185981-iqy4v"
+    },
+    {
+      "id": "f09e4ef1-d3a4-4413-b7c0-d3d79e6d09d4",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Call connected",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:49:53.218309",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "5d5f8e1d-4af5-4107-8908-79dcaee6704a",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "Doe",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:49:59.315137",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "4a63290d-6411-4729-bca9-ef65e944bdb9",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Worked in pc",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:50:01.187681",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "ce879233-a17e-4d2a-aeb5-d630a9661f74",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "Add typing indicator",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:50:12.155150",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "b7343c3d-2fea-49e5-a076-59131601a9fc",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Ill",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:50:18.613283",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "4b8a7586-a698-44ed-9c99-c02e29d21e93",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "Bro",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:50:29.312309",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "715a5c53-c9b7-4efb-b025-e65f522efcb9",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "/static/chat_media/0523a38e-3218-4d09-a8eb-b9e4aed8e709.jpg",
+      "type": "image",
+      "original_filename": "1750240237875.jpg",
+      "timestamp": "2025-06-18T09:50:56.727045",
+      "read": true,
+      "clientUploadId": "upload-1750240247041-ddogq"
+    },
+    {
+      "id": "e93b4d47-e87b-4443-b425-01f39f09ae6a",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Call working in my pc",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:50:59.808676",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "b6845481-300e-43a2-9f17-e96dedee8ac7",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "In this web can u remove blue badges from Web anyway",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:51:24.622531",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "2ec079a7-2cd0-4648-b0a8-fa04e21a8fed",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "And add typing indicator",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:51:32.735060",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "0254ba6c-48c8-4757-a7b5-811a1d887b4b",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Ok",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:51:36.768220",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "67da9ba2-9bd9-4fe4-b3a1-2a0cc3854a0a",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "Can u add vid call",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:51:50.147370",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "f8d58e23-5464-4ed5-9ce8-e048cd1739c3",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "It will really hard",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:52:00.739976",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "80323e4c-c92d-4ae6-bd10-2df592b42f1c",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "Ok leave it",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:52:09.888069",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "4d2ad7f3-971c-4d92-af05-003ff0cd7eca",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Idk about.but I'll try later",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:52:10.507121",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "3319cde8-a85c-4088-acbe-8cbf3da39bc1",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "U can try",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:52:18.374730",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "06442b93-32d6-4299-a329-a632ced67144",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "This",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:52:23.054633",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "96fb48af-e48e-4b46-b6c3-f5ad8d59b456",
+      "sender": "chamika",
+      "receiver": "Pro",
+      "message": "Yea",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:52:42.186893",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "db05a8ef-b466-4f2f-ab69-9c9eb7ba5b36",
+      "sender": "Pro",
+      "receiver": "chamika",
+      "message": "Yeh",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:52:58.943661",
+      "read": true,
+      "clientUploadId": null
+    }
+  ],
+  "Ansh_Pro": [
+    {
+      "id": "5368edc3-ed3f-48bb-a76a-3029dd46351d",
+      "sender": "Pro",
+      "receiver": "Ansh",
+      "message": "Hii",
+      "type": "text",
+      "timestamp": "2025-06-17T11:37:39.735099",
+      "read": false
+    }
+  ],
+  "Ansh_kavindu": [
+    {
+      "id": "eb85999d-3441-4b01-8fe9-f8065c156eb8",
+      "sender": "kavindu",
+      "receiver": "Ansh",
+      "message": "hey",
+      "type": "text",
+      "timestamp": "2025-06-17T11:12:00.269195",
+      "read": false
+    }
+  ],
+  "Anshopi_kavindu": [
+    {
+      "id": "a37912f6-3464-4d1b-8ecc-ff8237da2e97",
+      "sender": "kavindu",
+      "receiver": "Anshopi",
+      "message": "hey",
+      "type": "text",
+      "timestamp": "2025-06-17T11:12:04.419850",
+      "read": false
+    }
+  ],
+  "admin_kavindu": [
+    {
+      "id": "c00b1c73-57f8-4aa5-b82c-12cc49040c40",
+      "sender": "admin",
+      "receiver": "kavindu",
+      "message": "dssd",
+      "type": "text",
+      "timestamp": "2025-06-17T11:21:26.400027",
+      "read": true
+    },
+    {
+      "id": "2af4dc58-fb76-4d22-8392-93dab6bd239c",
+      "sender": "admin",
+      "receiver": "kavindu",
+      "message": "ddjd",
+      "type": "text",
+      "timestamp": "2025-06-17T11:22:05.969602",
+      "read": true
+    },
+    {
+      "id": "5507ee90-cc30-49f4-ab37-1556c8b4a4de",
+      "sender": "kavindu",
+      "receiver": "admin",
+      "message": "Hey admin",
+      "type": "text",
+      "timestamp": "2025-06-17T14:52:49.118071",
+      "read": true
+    },
+    {
+      "id": "902b4ffc-f00d-4520-b042-b0daa927a6f8",
+      "sender": "admin",
+      "receiver": "kavindu",
+      "message": "Hi machan",
+      "type": "text",
+      "timestamp": "2025-06-17T14:53:12.966807",
+      "read": true
+    },
+    {
+      "id": "b09c1e53-2d63-4fa3-ac3f-01fb47318c06",
+      "sender": "admin",
+      "receiver": "kavindu",
+      "message": "Kohomada",
+      "type": "text",
+      "timestamp": "2025-06-17T14:53:15.597622",
+      "read": true
+    },
+    {
+      "id": "4a5ad083-e0a2-469c-a3d2-cc4bb91b2eac",
+      "sender": "kavindu",
+      "receiver": "admin",
+      "message": "Jsjs",
+      "type": "text",
+      "timestamp": "2025-06-17T14:53:24.192664",
+      "read": true
+    },
+    {
+      "id": "d487b4a6-3353-4eca-87c3-7439763eb578",
+      "sender": "admin",
+      "receiver": "kavindu",
+      "message": "Isksjw",
+      "type": "text",
+      "timestamp": "2025-06-17T14:53:28.257788",
+      "read": true
+    },
+    {
+      "id": "a12d7e46-c0d6-4dd9-825c-3997ef2efed5",
+      "sender": "kavindu",
+      "receiver": "admin",
+      "message": "Mk",
+      "type": "text",
+      "timestamp": "2025-06-17T14:53:32.487623",
+      "read": true
+    },
+    {
+      "id": "43eb9f5c-b9d5-480e-933c-3e0856e2ae17",
+      "sender": "admin",
+      "receiver": "kavindu",
+      "message": "Hodi",
+      "type": "text",
+      "timestamp": "2025-06-17T14:53:36.656643",
+      "read": true
+    }
+  ],
+  "admin_johndoe2": [
+    {
+      "id": "c8ac228c-554e-4f2e-91b2-c15f06163398",
+      "sender": "admin",
+      "receiver": "johndoe2",
+      "message": "eedhe",
+      "type": "text",
+      "timestamp": "2025-06-17T11:22:00.029597",
+      "read": false
+    }
+  ],
+  "Pro_johndoe2": [
+    {
+      "id": "d7f0fcb1-c3a7-450a-b9bd-c28c882d58c5",
+      "sender": "Pro",
+      "receiver": "johndoe2",
+      "message": "Hii",
+      "type": "text",
+      "timestamp": "2025-06-17T11:39:16.227027",
+      "read": false
+    },
+    {
+      "id": "9c211618-30e1-48e2-9cf5-c4bae770b269",
+      "sender": "Pro",
+      "receiver": "johndoe2",
+      "message": "H",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T10:06:39.161161",
+      "read": false,
+      "clientUploadId": null
+    }
+  ],
+  "Nuwan_kavindu": [
+    {
+      "id": "0cc389f6-8c04-4a3f-8194-82d9a3e684ca",
+      "sender": "Nuwan",
+      "receiver": "kavindu",
+      "message": "Hi",
+      "type": "text",
+      "timestamp": "2025-06-17T12:17:46.007345",
+      "read": false
+    }
+  ],
+  "Pro_anshopi": [
+    {
+      "id": "66878d1e-5f6d-48c7-949f-106c3c006786",
+      "sender": "anshopi",
+      "receiver": "Pro",
+      "message": "hii",
+      "type": "text",
+      "timestamp": "2025-06-17T15:10:09.095615",
+      "read": true
+    },
+    {
+      "id": "a8a42e8d-93fe-4325-8523-00c32feac529",
+      "sender": "Pro",
+      "receiver": "anshopi",
+      "message": "hello bro",
+      "type": "text",
+      "timestamp": "2025-06-17T15:10:33.593112",
+      "read": true
+    },
+    {
+      "id": "79607430-c220-424b-a3ce-d32584b14b36",
+      "sender": "Pro",
+      "receiver": "anshopi",
+      "message": "😀",
+      "type": "text",
+      "timestamp": "2025-06-17T15:10:45.482259",
+      "read": true
+    }
+  ],
+  "Sagra_anshopi": [
+    {
+      "id": "6679a0c5-0af9-4913-9c02-2568ad942878",
+      "sender": "Sagra",
+      "receiver": "anshopi",
+      "message": ".m",
+      "type": "text",
+      "timestamp": "2025-06-18T01:35:47.002044",
+      "read": false
+    }
+  ],
+  "Sagra_chamika": [
+    {
+      "id": "9f87f08f-574e-4c13-b981-77b1a4cea9f4",
+      "sender": "chamika",
+      "receiver": "Sagra",
+      "message": "Hey",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T06:42:53.388554",
+      "read": false,
+      "clientUploadId": null
+    }
+  ],
+  "Extreme_Pro": [
+    {
+      "id": "61d80023-5974-4850-a5cf-075aca9a4251",
+      "sender": "Pro",
+      "receiver": "Extreme",
+      "message": "Hii",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T09:56:50.462809",
+      "read": true,
+      "clientUploadId": null
+    }
+  ],
+  "Madhusudan_Pro": [],
+  "chamika_desh22": [
+    {
+      "id": "aa21efe6-9e96-4604-93d0-af0db787d9c0",
+      "sender": "chamika",
+      "receiver": "desh22",
+      "message": "hey",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-18T11:07:46.842131",
+      "read": false,
+      "clientUploadId": null
+    }
+  ]
+}

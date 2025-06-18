@@ -1,0 +1,1959 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="navbar">
+            <h1><i class="fas fa-comments"></i> Chat App</h1>
+            <div class="nav-links">
+                <span>Welcome, {{ current_user }}!</span>
+                <a href="{{ url_for('profile') }}"><i class="fas fa-user"></i> Profile</a>
+                <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+        
+        <div class="chat-container">
+            <div class="sidebar">
+                <div class="search-container">
+                    <input type="text" id="searchUsers" placeholder="Search users..." class="search-input">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+                
+                <div class="users-list" id="usersList">
+                    <!-- Users will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="chat-area">
+                <div class="chat-header" id="chatHeader" style="display: none;">
+                    <div class="user-info">
+                        <button class="btn-icon back-btn" id="backToUsersList" title="Back to users">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <img src="" alt="" class="user-avatar" id="chatUserAvatar">
+                        <div>
+                            <div class="user-name" id="chatUserName"></div>
+                            <div class="user-status" id="chatUserStatus"></div>
+                        </div>
+                    </div>
+                    <div class="chat-actions">
+                        <button class="btn-icon" id="voiceCallBtn" onclick="initiateVoiceCall()" title="Voice Call" style="display: none;"> <!-- Initially hidden -->
+                            <i class="fas fa-phone"></i>
+                        </button>
+                        <button class="btn-icon" onclick="clearChat()" title="Clear Chat">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hidden audio elements for WebRTC -->
+                <audio id="localAudio" autoplay muted playsinline style="display:none;"></audio>
+                <audio id="remoteAudio" autoplay playsinline style="display:none;"></audio>
+                <audio id="ringtoneAudio" loop style="display:none;"></audio>
+
+                <!-- Incoming Call Modal -->
+                <div id="incomingCallModal" class="call-modal" style="display: none;">
+                    <div class="call-modal-content">
+                        <h4>Incoming Call</h4>
+                        <p><span id="callerName"></span> is calling...</p>
+                        <div class="call-modal-actions">
+                            <button id="acceptCallBtn" class="btn-call-action accept"><i class="fas fa-phone"></i> Accept</button>
+                            <button id="rejectCallBtn" class="btn-call-action reject"><i class="fas fa-phone-slash"></i> Reject</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Call UI -->
+                <div id="activeCallUI" class="active-call-ui" style="display: none;">
+                    <p>Call with <span id="activeCallPartnerName"></span></p>
+                    <div id="callStatus">Connecting...</div>
+                    <div class="call-controls">
+                        <button id="muteCallBtn" class="btn-call-control"><i class="fas fa-microphone"></i> Mute</button>
+                        <button id="endCallBtn" class="btn-call-control end"><i class="fas fa-phone-slash"></i> End Call</button>
+                    </div>
+                </div>
+                
+                <div class="messages-container" id="messagesContainer">
+                    <div class="welcome-message">
+                        <i class="fas fa-comments"></i>
+                        <h3>Welcome to Chat App!</h3>
+                        <p>Select a user from the sidebar to start chatting</p>
+                    </div>
+                </div>
+                
+                <div class="message-input-container" id="messageInputContainer" style="display: none;">
+                    <button class="emoji-btn" onclick="toggleEmojiPicker()" title="Emoji">
+                        <i class="fas fa-smile"></i>
+                    </button>
+                    <button class="attach-btn" id="attachFileBtn" title="Attach file">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <input type="file" id="mediaFile" style="display:none;" accept="image/*,.heic,.heif,audio/*,video/*,.pdf,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx,.zip,.rar">
+                    <input type="text" id="messageInput" placeholder="Type a message..." maxlength="1000">
+                    <button class="send-btn" onclick="sendMessage()" title="Send">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="emoji-picker" id="emojiPicker">
+    <div class="emoji" onclick="addEmoji('😀')">😀</div>
+    <div class="emoji" onclick="addEmoji('😂')">😂</div>
+    <div class="emoji" onclick="addEmoji('😍')">😍</div>
+    <div class="emoji" onclick="addEmoji('🥰')">🥰</div>
+    <div class="emoji" onclick="addEmoji('😎')">😎</div>
+    <div class="emoji" onclick="addEmoji('🤔')">🤔</div>
+    <div class="emoji" onclick="addEmoji('😢')">😢</div>
+    <div class="emoji" onclick="addEmoji('😭')">😭</div>
+    <div class="emoji" onclick="addEmoji('😡')">😡</div>
+    <div class="emoji" onclick="addEmoji('👍')">👍</div>
+    <div class="emoji" onclick="addEmoji('👎')">👎</div>
+    <div class="emoji" onclick="addEmoji('❤️')">❤️</div>
+    <div class="emoji" onclick="addEmoji('🔥')">🔥</div>
+    <div class="emoji" onclick="addEmoji('✨')">✨</div>
+    <div class="emoji" onclick="addEmoji('🎉')">🎉</div>
+</div>
+
+<style>
+/* Mobile-specific overrides for base.html elements to allow full-screen chat */
+@media (max-width: 767px) {
+    html, body { /* Prevent scrolling on the body for a true full-screen app feel */
+        height: 100%;
+        overflow: hidden !important;
+    }
+
+    /* Target the main .container and .card from base.html for the chat page */
+    body > .container { 
+        padding: 0 !important;
+        margin: 0 !important; 
+        max-width: none !important;
+        height: 100vh !important; /* Make .container itself viewport height */
+        display: flex; /* Allow card to fill it */
+    }
+
+    body > .container > .card {
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+        flex: 1 !important; /* Card fills the .container */
+        display: flex !important; 
+        flex-direction: column !important;
+        overflow: hidden !important; /* Card itself should not scroll */
+    }
+}
+
+.chat-container {
+    display: flex;
+    width: 100%;
+    flex: 1; /* Grow to fill available space in parent .card (after chat's own navbar) */
+    overflow: hidden; /* Prevent chat-container itself from scrolling if content overflows */
+    /* height: 100vh; Removed, as parent .card and .container now manage viewport height */
+}
+
+.sidebar {
+    width: 100%; /* Takes full width by default on mobile */
+    height: 100%; /* Takes full height of parent */
+    border-right: 1px solid #e0e0e0;
+    background: #f8f9fa;
+    display: flex; /* Remains flex for internal layout */
+    flex-direction: column;
+    /* border-right is removed for mobile, will be added back for desktop */
+}
+
+.search-container {
+    position: relative;
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 14px;
+    outline: none;
+}
+
+.search-icon {
+    position: absolute;
+    right: 35px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+.users-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.user-item {
+    padding: 15px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-item:hover {
+    background: #e3f2fd;
+}
+
+.user-item.active {
+    background: #128C7E;
+    color: white;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #ddd;
+}
+
+.user-details {
+    flex: 1;
+    display: flex; /* For layout of name/last message and time/unread */
+    justify-content: space-between;
+    overflow: hidden; /* Prevents long names/messages from breaking layout */
+}
+
+.user-info-main { /* Container for name and last message */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertically center if only one line of text */
+    overflow: hidden; /* For text-overflow */
+    flex-grow: 1; /* Allow this to take up space */
+    padding-right: 10px; /* Space before time/unread */
+}
+
+.user-name {
+    font-weight: 600;
+    margin-bottom: 4px; /* Increased margin */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-last-message { /* New style for last message preview */
+    font-size: 0.85em; /* Slightly smaller */
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.user-item.active .user-last-message {
+    color: rgba(255,255,255,0.9);
+}
+
+.user-meta-info { /* Container for time and unread count */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Align to the right */
+    justify-content: center; /* Vertically center if only one line of text */
+    min-width: 50px; /* Ensure some space for time/badge */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.user-message-time { /* New style for last message time */
+    font-size: 0.75em;
+    color: #888;
+    margin-bottom: 5px; /* Space if unread count is below */
+}
+.user-item.active .user-message-time {
+    color: rgba(255,255,255,0.7);
+}
+
+.unread-count-badge { /* New style for unread count */
+    background-color: #25D366; /* WhatsApp green */
+    color: white;
+    font-size: 0.7em;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 10px;
+    min-width: 18px; /* Ensure circle shape for single digit */
+    text-align: center;
+    line-height: 1.3; /* Adjust for better vertical centering of text */
+}
+.user-item.active .unread-count-badge {
+    background-color: white; /* Invert colors when active */
+    color: #128C7E;
+}
+
+
+/* Remove old .user-last-seen if not used, or repurpose */
+.user-last-seen { 
+    /* display: none; */ /* If completely replaced by last message */
+    /* Or, if you want to keep it for online/offline status under the name */
+    font-size: 12px;
+    color: #666;
+    /* margin-top: 2px; */ /* Adjust if kept */
+}
+.user-item.active .user-last-seen {
+    color: rgba(255,255,255,0.8);
+}
+
+
+.chat-area {
+    width: 100%; /* Takes full width when active on mobile */
+    height: 100%; /* Takes full height of parent when active */
+    display: none; /* Hidden by default on mobile */
+    flex-direction: column; /* Internal stacking of header, messages, input */
+}
+
+/* Mobile view: Toggle visibility of sidebar and chat-area */
+.chat-container.chat-active .sidebar {
+    display: none;
+}
+
+.chat-container.chat-active .chat-area {
+    display: flex; /* Show chat area */
+}
+
+.chat-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-status {
+    font-size: 12px;
+    color: #666;
+}
+
+.chat-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.btn-icon:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.back-btn { /* Ensure back button is visible and styled for mobile */
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    /* padding: 8px; /* Already in .btn-icon */
+    /* font-size: 18px; /* Adjust if needed */
+}
+
+.messages-container {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #f5f5f5;
+}
+
+.message-bubble img,
+.message-bubble video,
+.message-bubble audio {
+    max-width: 100%;
+    border-radius: 10px; /* Match bubble radius slightly */
+    display: block; /* Ensure they take up block space */
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.message-bubble video {
+    max-height: 300px; /* Limit video height */
+}
+.message-bubble audio {
+    width: 100%; /* Make audio player take full width of bubble */
+}
+
+.custom-audio-player {
+    display: flex;
+    align-items: center;
+    padding: 8px 0px; /* Reduced padding as bubble already has padding */
+    min-width: 200px; /* Ensure it has some width */
+}
+
+.audio-play-pause-btn {
+    background: none;
+    border: 2px solid; /* Border color will be inherited or set by .sent/.received */
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    color: #555; /* Default icon color */
+    transition: background-color 0.2s, color 0.2s;
+}
+.message.sent .audio-play-pause-btn {
+    color: white;
+    border-color: white;
+}
+.message.received .audio-play-pause-btn {
+    color: #128C7E; /* Theme color for received play button */
+    border-color: #128C7E;
+}
+
+.audio-play-pause-btn:hover {
+    background-color: rgba(0,0,0,0.1);
+}
+.message.sent .audio-play-pause-btn:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+
+.audio-filename {
+    font-size: 0.9em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #333; /* Default filename color */
+}
+.message.sent .audio-filename {
+    color: white;
+}
+.message.received .audio-filename {
+    color: #333;
+}
+
+
+.file-download-link {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #e0e0e0;
+    color: #333;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+.file-download-link i {
+    margin-right: 5px;
+}
+.file-download-link:hover {
+    background-color: #d0d0d0;
+}
+
+.upload-progress-container {
+    padding: 5px 0;
+}
+.upload-progress-filename {
+    font-size: 0.9em;
+    color: #555; /* Darker for sent, lighter for received if needed */
+    margin-bottom: 3px;
+    word-break: break-all;
+}
+.message.sent .upload-progress-filename {
+    color: #f0f0f0;
+}
+.progress-bar-bg {
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    height: 10px;
+    overflow: hidden;
+}
+.message.sent .progress-bar-bg {
+    background-color: #0a5c53; /* Darker shade for sent message progress bg */
+}
+.progress-bar-fill {
+    background-color: #4CAF50; /* Green for progress */
+    height: 100%;
+    width: 0%;
+    border-radius: 5px;
+    transition: width 0.1s linear;
+}
+.progress-text {
+    font-size: 0.8em;
+    color: #777;
+    text-align: right;
+    margin-top: 2px;
+}
+.message.sent .progress-text {
+    color: #e0e0e0;
+}
+.upload-error-text {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+
+.welcome-message {
+    text-align: center;
+    color: #666;
+    margin-top: 100px;
+}
+
+.welcome-message i {
+    font-size: 48px;
+    margin-bottom: 20px;
+    color: #128C7E;
+}
+
+.message {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.message.sent {
+    justify-content: flex-end;
+}
+
+.message.sent .message-bubble {
+    background: #128C7E;
+    color: white;
+}
+
+.message.received .message-bubble {
+    background: white;
+}
+
+.message-bubble {
+    max-width: 70%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    word-wrap: break-word;
+    position: relative;
+}
+
+.message-time {
+    font-size: 11px;
+    opacity: 0.7;
+    margin-top: 4px;
+}
+
+.message-status {
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.message-actions {
+    display: flex;
+    gap: 5px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.message:hover .message-actions {
+    opacity: 1;
+}
+
+.message-action-btn {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 12px;
+    color: #666;
+}
+
+.message-action-btn:hover {
+    background: rgba(0,0,0,0.1);
+}
+
+.message-input-container {
+    padding: 15px 20px;
+    border-top: 1px solid #e0e0e0;
+    background: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.emoji-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    color: #666;
+}
+
+.emoji-btn:hover {
+    background: #f0f0f0;
+}
+
+.attach-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    color: #666;
+}
+.attach-btn:hover {
+    background: #f0f0f0;
+}
+
+#messageInput {
+    flex: 1;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    outline: none;
+    font-size: 14px;
+}
+
+.send-btn {
+    background: #128C7E;
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.send-btn:hover {
+    background: #0e7469;
+    transform: scale(1.1);
+}
+
+.read-status {
+    color: #4CAF50;
+}
+
+.unread-status {
+    color: #666;
+}
+
+/* Desktop and larger screens */
+@media (min-width: 768px) {
+    .chat-container {
+        flex-direction: row !important; /* Ensure side-by-side */
+        height: 600px; /* Or a more dynamic height like 90vh */
+        overflow: visible; /* Reset overflow if needed */
+    }
+
+    .sidebar {
+        width: 300px !important; /* Fixed width for sidebar */
+        height: 100% !important; /* Full height of chat-container */
+        display: flex !important; /* Always visible */
+        border-right: 1px solid #e0e0e0 !important; /* Add border back */
+        border-bottom: none; /* Keep this if it was intended */
+    }
+
+    .chat-area {
+        flex: 1 !important; /* Takes remaining space */
+        width: auto !important; /* Override mobile's 100% width */
+        height: 100% !important; /* Full height of chat-container */
+        display: flex !important; /* Always visible */
+    }
+
+    /* .chat-container.chat-active .sidebar rule is no longer needed for desktop, */
+    /* as sidebar and chat-area are always displayed. */
+    
+    .back-btn {
+        display: none !important; /* Hide back button on desktop */
+    }
+
+    .welcome-message {
+        display: flex; /* Use flex for welcome message on desktop */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        margin-top: 0;
+    }
+    .messages-container:not(:empty) + .welcome-message { /* Hide welcome if messages exist */
+        display: none;
+    }
+     .messages-container:empty ~ .welcome-message { /* Show welcome if no messages and no user selected */
+        display: flex;
+    }
+    #chatHeader:not([style*="display: none;"]) ~ .messages-container .welcome-message { /* Hide if chat header is visible */
+        display: none;
+    }
+}
+
+/* Notification Styles */
+.chat-notification {
+    background-color: #2c3e50; /* Dark blue-grey */
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    margin-bottom: 10px;
+    width: 320px; /* Fixed width */
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+}
+
+.chat-notification strong {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #ecf0f1; /* Light grey for sender name */
+}
+
+.chat-notification p {
+    margin: 0;
+    font-size: 0.9em;
+    line-height: 1.4;
+    color: #bdc3c7; /* Softer grey for message text */
+}
+
+/* Call UI Styles */
+.call-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000; /* Above other elements */
+}
+.call-modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.call-modal-content h4 {
+    margin-bottom: 10px;
+    font-size: 1.5em;
+}
+.call-modal-content p {
+    margin-bottom: 20px;
+    font-size: 1.1em;
+}
+.call-modal-actions button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+.btn-call-action.accept {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+.btn-call-action.reject {
+    background-color: #f44336; /* Red */
+    color: white;
+}
+
+.active-call-ui {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    z-index: 1900;
+    text-align: center;
+}
+.active-call-ui p {
+    margin-bottom: 8px;
+}
+#callStatus {
+    font-size: 0.9em;
+    margin-bottom: 12px;
+    color: #ccc;
+}
+.call-controls button {
+    padding: 8px 15px;
+    margin: 0 8px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: #555;
+    color: white;
+}
+.call-controls button.end {
+    background-color: #f44336;
+}
+.call-controls button:hover {
+    opacity: 0.8;
+}
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.7.2/dist/socket.io.min.js"></script>
+<script>
+const socket = io();
+let currentChatUser = null;
+let currentUser = '{{ current_user }}';
+
+// WebRTC Variables
+let localStream;
+let remoteStream;
+let peerConnection;
+let isCallActive = false;
+let callTargetUser = null; // User being called or user calling us
+let iceCandidateBuffer = []; // Buffer for early ICE candidates
+const stunServers = {
+    iceServers: [
+        { urls: 'stun:stun.l.google.com:19302' },
+        { urls: 'stun:stun1.l.google.com:19302' }
+        // You might need TURN servers for production for NAT traversal
+    ]
+};
+const localAudioEl = document.getElementById('localAudio');
+const remoteAudioEl = document.getElementById('remoteAudio');
+
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    loadUsers();
+    
+    // Search functionality
+    document.getElementById('searchUsers').addEventListener('input', function(e) {
+        const query = e.target.value;
+        if (query.length > 0) {
+            searchUsers(query);
+        } else {
+            loadUsers();
+        }
+    });
+    
+    // Enter key to send message
+    document.getElementById('messageInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    // Back button functionality
+    const backButton = document.getElementById('backToUsersList');
+    if (backButton) {
+        backButton.addEventListener('click', function() {
+            document.querySelector('.chat-container').classList.remove('chat-active');
+            currentChatUser = null;
+            document.getElementById('chatHeader').style.display = 'none';
+            document.getElementById('messageInputContainer').style.display = 'none';
+            document.getElementById('messagesContainer').innerHTML = `
+                <div class="welcome-message">
+                    <i class="fas fa-comments"></i>
+                    <h3>Welcome to Chat App!</h3>
+                    <p>Select a user from the sidebar to start chatting</p>
+                </div>`;
+        });
+    }
+
+    // Attach file button
+    document.getElementById('attachFileBtn').addEventListener('click', () => {
+        document.getElementById('mediaFile').click();
+    });
+
+    // Handle file selection
+    document.getElementById('mediaFile').addEventListener('change', handleFileUpload);
+
+    // Call UI button listeners
+    document.getElementById('acceptCallBtn').addEventListener('click', acceptCallHandler);
+    document.getElementById('rejectCallBtn').addEventListener('click', rejectCallHandler);
+    document.getElementById('muteCallBtn').addEventListener('click', toggleMuteCall);
+    document.getElementById('endCallBtn').addEventListener('click', endCallHandler);
+
+});
+
+
+// --- Voice Call UI Functions ---
+function showIncomingCallModal(caller, callerName) {
+    callTargetUser = caller; // The user who is calling us
+    document.getElementById('callerName').textContent = callerName || caller;
+    document.getElementById('incomingCallModal').style.display = 'flex';
+    
+    const ringtone = document.getElementById('ringtoneAudio');
+    // Ensure src is set before playing
+    if (ringtone.src !== "{{ url_for('static', filename='ringingtone.mp3') }}") {
+        ringtone.src = "{{ url_for('static', filename='ringingtone.mp3') }}";
+        // Play after src is set, possibly on a 'canplaythrough' event or a small timeout
+        // For simplicity, let's try direct play, but be aware of race conditions.
+        ringtone.load(); // Explicitly load the new source
+    }
+    
+    // Attempt to play. Browsers might block autoplay if not user-initiated.
+    // The incoming call itself is a user-relevant event, so this often works.
+    const playPromise = ringtone.play();
+    if (playPromise !== undefined) {
+        playPromise.catch(error => {
+            console.warn("Ringtone playback failed:", error);
+            // Autoplay might be blocked. User interaction might be needed to enable sound.
+        });
+    }
+}
+
+function hideIncomingCallModal() {
+    document.getElementById('incomingCallModal').style.display = 'none';
+    const ringtone = document.getElementById('ringtoneAudio');
+    ringtone.pause();
+    ringtone.currentTime = 0;
+}
+
+function showActiveCallUI(partnerName, status = "Connecting...") {
+    document.getElementById('activeCallPartnerName').textContent = partnerName;
+    document.getElementById('callStatus').textContent = status;
+    document.getElementById('activeCallUI').style.display = 'block';
+    document.getElementById('voiceCallBtn').innerHTML = '<i class="fas fa-phone-slash"></i>'; // Change to end call icon
+    document.getElementById('voiceCallBtn').title = 'End Call';
+    // Disable message input during call? Maybe not necessary for audio only.
+}
+
+function hideActiveCallUI() {
+    document.getElementById('activeCallUI').style.display = 'none';
+    document.getElementById('voiceCallBtn').innerHTML = '<i class="fas fa-phone"></i>'; // Reset to call icon
+    document.getElementById('voiceCallBtn').title = 'Voice Call';
+    isCallActive = false;
+    callTargetUser = null;
+    if (localStream) {
+        localStream.getTracks().forEach(track => track.stop());
+        localStream = null;
+    }
+    if (peerConnection) {
+        peerConnection.close();
+        peerConnection = null;
+    }
+    remoteAudioEl.srcObject = null;
+    iceCandidateBuffer = []; // Clear buffer on call end/reset
+}
+
+// --- Voice Call Core Functions ---
+
+async function createPeerConnection() {
+    // Consider renaming stunServers to rtcConfiguration if you add TURN servers
+    // For now, we'll keep using stunServers as the variable name
+    peerConnection = new RTCPeerConnection(stunServers); 
+    console.log(`[${currentUser}] Created RTCPeerConnection for call with ${callTargetUser}. Config:`, JSON.stringify(stunServers));
+
+    peerConnection.onicecandidate = event => {
+        if (event.candidate) {
+            console.log(`[${currentUser}] Sending ICE candidate to ${callTargetUser}:`, event.candidate);
+            socket.emit('ice_candidate', {
+                target: callTargetUser,
+                candidate: event.candidate,
+                sender: currentUser // Explicitly state who is sending this candidate
+            });
+        } else {
+            console.log(`[${currentUser}] All ICE candidates have been sent for call with ${callTargetUser}.`);
+        }
+    };
+
+    peerConnection.onicegatheringstatechange = () => {
+        if(peerConnection) console.log(`[${currentUser}] ICE gathering state changed: ${peerConnection.iceGatheringState}`);
+    };
+
+    peerConnection.ontrack = event => {
+        console.log(`[${currentUser}] Received remote track from ${callTargetUser}:`, event.track);
+        if (event.streams && event.streams[0]) {
+            remoteAudioEl.srcObject = event.streams[0];
+        } else {
+            // For older browsers
+            let inboundStream = new MediaStream(event.track);
+            remoteAudioEl.srcObject = inboundStream;
+        }
+        document.getElementById('callStatus').textContent = "Connected";
+    };
+    
+    peerConnection.oniceconnectionstatechange = () => {
+        if (!peerConnection) {
+            console.log(`[${currentUser}] oniceconnectionstatechange called but peerConnection is null.`);
+            return; 
+        }
+
+        const currentState = peerConnection.iceConnectionState;
+        const partner = callTargetUser || 'unknown partner';
+        console.log(`[${currentUser}] ICE connection state change with ${partner}: ${currentState}`);
+
+        switch (currentState) {
+            case 'new':
+            case 'checking':
+                document.getElementById('callStatus').textContent = "Connecting (ICE checking)...";
+                break;
+            case 'connected':
+            case 'completed': // 'completed' means all checks done, 'connected' means usable connection found
+                console.log(`[${currentUser}] ICE connection established with ${partner}.`);
+                document.getElementById('callStatus').textContent = "Connected";
+                // Clear any early ICE candidates buffer if not already done after setting remote description
+                // processBufferedIceCandidates(callTargetUser); // Might be useful here too if not cleared
+                break;
+            case 'disconnected':
+                console.warn(`[${currentUser}] Call with ${partner} temporarily disconnected. State: ${currentState}`);
+                // For simplicity, we treat 'disconnected' as a terminal state for this call attempt.
+                // More advanced implementations might attempt ICE restarts.
+                if (isCallActive) {
+                    alert("Call connection lost. Please try again.");
+                    endCallHandler(false); // false: don't emit 'call_ended' as it's a network issue
+                }
+                break;
+            case 'failed':
+                console.error(`[${currentUser}] Call with ${partner} failed. State: ${currentState}`);
+                if (isCallActive) {
+                    alert("Call connection failed. Please check your network and try again.");
+                    endCallHandler(false);
+                }
+                break;
+            case 'closed':
+                console.log(`[${currentUser}] Call with ${partner} closed. State: ${currentState}`);
+                // This is often the result of endCallHandler() calling peerConnection.close().
+                // No alert needed if isCallActive is already false (meaning it was an intentional close).
+                if (isCallActive) { 
+                    // If call was thought to be active and connection closed unexpectedly by other means
+                    alert("Call ended.");
+                    endCallHandler(false);
+                }
+                break;
+            default:
+                console.log(`[${currentUser}] Unhandled ICE connection state with ${partner}: ${currentState}`);
+                break;
+        }
+    };
+}
+
+async function initiateVoiceCall() {
+    if (!currentChatUser) {
+        alert("Please select a user to call.");
+        return;
+    }
+    if (isCallActive && callTargetUser === currentChatUser) {
+        endCallHandler();
+        return;
+    }
+    if (isCallActive) {
+        alert("You are already in a call. Please end the current call first.");
+        return;
+    }
+
+    callTargetUser = currentChatUser;
+    const targetUserName = document.getElementById('chatUserName').textContent;
+    showActiveCallUI(targetUserName, "Requesting microphone...");
+
+    try {
+        localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+        localAudioEl.srcObject = localStream; // Optional: play local audio muted for user to know mic is working
+
+        await createPeerConnection();
+        localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+        
+        document.getElementById('callStatus').textContent = "Creating offer...";
+        const offer = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offer);
+        // At this point, the local description is set.
+        // We don't typically process buffered candidates here for the *caller* immediately,
+        // as we are waiting for an answer. Candidates from the callee will arrive after they answer.
+
+        socket.emit('voice_call_offer', {
+            target: callTargetUser,
+            offer: offer,
+            callerName: currentUser // Or a display name if you have one
+        });
+        document.getElementById('callStatus').textContent = "Calling...";
+        isCallActive = true;
+
+    } catch (error) {
+        console.error("Error initiating call:", error);
+        alert("Could not initiate call. Check microphone permissions or console for errors.");
+        hideActiveCallUI();
+    }
+}
+
+async function acceptCallHandler() {
+    if (!callTargetUser) { // callTargetUser is the caller in this context
+        console.error("No caller information to accept call.");
+        hideIncomingCallModal();
+        return;
+    }
+    
+    const callerUsername = callTargetUser; // Store it before it's potentially changed by selectUser
+    const callerDisplayName = document.getElementById('callerName').textContent; // Get name from modal
+
+    hideIncomingCallModal();
+
+    // If the chat with the caller is not currently active, switch to it.
+    // This is important for mobile view where only one chat is visible.
+    if (currentChatUser !== callerUsername) {
+        console.log(`[${currentUser}] Switching to chat with ${callerUsername} to accept call.`);
+        selectUser(callerUsername); // This will make the chat area active
+        // selectUser might be asynchronous in its effects if it involves fetches for user details.
+        // However, for UI display, it should set currentChatUser synchronously.
+        // We might need a small delay or a callback if selectUser's UI updates are slow,
+        // but let's try without first.
+    }
+    
+    showActiveCallUI(callerDisplayName, "Requesting microphone...");
+
+    try {
+        localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+        localAudioEl.srcObject = localStream;
+
+        await createPeerConnection(); // Creates a new peerConnection for the callee
+        localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+
+        if (!window.currentOffer || window.currentOfferFrom !== callTargetUser) { // Ensure callTargetUser matches the offer's origin
+            throw new Error("No valid offer found to accept call or offer mismatch.");
+        }
+        await peerConnection.setRemoteDescription(new RTCSessionDescription(window.currentOffer));
+        
+        document.getElementById('callStatus').textContent = "Creating answer...";
+        const answer = await peerConnection.createAnswer();
+        await peerConnection.setLocalDescription(answer);
+        console.log(`[${currentUser}] Local description (answer) set. Processing buffered ICE candidates for ${callTargetUser}.`);
+        processBufferedIceCandidates(callTargetUser); // Process any early candidates from the caller
+
+        socket.emit('voice_call_answer', {
+            target: callTargetUser, // The original caller
+            answer: answer
+        });
+        document.getElementById('callStatus').textContent = "Connecting...";
+        isCallActive = true; // Callee is now also in an active call state
+
+    } catch (error) {
+        console.error("Error accepting call:", error);
+        alert("Could not accept call. Check microphone permissions or console for errors.");
+        hideActiveCallUI();
+    }
+}
+
+function rejectCallHandler() {
+    if (!callTargetUser) return; // callTargetUser is the caller
+    console.log(`Rejecting call from ${callTargetUser}`);
+    socket.emit('call_rejected', { target: callTargetUser, rejected_by: currentUser });
+    hideIncomingCallModal();
+    callTargetUser = null; // Reset as call is rejected
+    window.currentOffer = null; // Clear stored offer
+    window.currentOfferFrom = null;
+}
+
+function processBufferedIceCandidates(expectedFrom) {
+    if (!peerConnection || !peerConnection.remoteDescription || peerConnection.signalingState === "closed") {
+        console.log(`[${currentUser}] Cannot process buffered ICE candidates for ${expectedFrom}, peerConnection not ready or closed. PC State: ${peerConnection ? peerConnection.signalingState : 'null'}`);
+        return;
+    }
+    console.log(`[${currentUser}] Processing buffered ICE candidates for ${expectedFrom}. Buffer size: ${iceCandidateBuffer.length}`);
+    const stillToProcess = [];
+    iceCandidateBuffer.forEach(async item => {
+        if (item.from === expectedFrom) {
+            try {
+                console.log(`[${currentUser}] Adding buffered ICE candidate from ${item.from}:`, item.candidate);
+                await peerConnection.addIceCandidate(new RTCIceCandidate(item.candidate));
+                console.log(`[${currentUser}] Successfully added buffered ICE candidate from ${item.from}`);
+            } catch (error) {
+                console.error(`[${currentUser}] Error adding buffered ICE candidate from ${item.from}:`, error, item.candidate);
+            }
+        } else {
+            stillToProcess.push(item); 
+        }
+    });
+    iceCandidateBuffer = stillToProcess; 
+    console.log(`[${currentUser}] Finished processing buffered ICE candidates for ${expectedFrom}. Remaining in buffer: ${iceCandidateBuffer.length}`);
+}
+
+function endCallHandler(emitEvent = true) { // emitEvent to prevent loop if called by disconnection
+    console.log(`Ending call with ${callTargetUser || 'unknown partner'}`);
+    if (emitEvent && callTargetUser) {
+        socket.emit('call_ended', { target: callTargetUser, ended_by: currentUser });
+    }
+    hideActiveCallUI(); // This resets localStream, peerConnection, isCallActive, callTargetUser
+    window.currentOffer = null;
+    window.currentOfferFrom = null;
+    iceCandidateBuffer = []; // Clear buffer on call end
+}
+
+function toggleMuteCall() {
+    if (!localStream) return;
+    const audioTrack = localStream.getAudioTracks()[0];
+    if (audioTrack) {
+        audioTrack.enabled = !audioTrack.enabled;
+        document.getElementById('muteCallBtn').innerHTML = audioTrack.enabled ? '<i class="fas fa-microphone"></i> Mute' : '<i class="fas fa-microphone-slash"></i> Unmute';
+        console.log(audioTrack.enabled ? "Unmuted" : "Muted");
+    }
+}
+
+
+// Handle file upload
+function handleFileUpload(event) {
+    const file = event.target.files[0];
+    const fileInput = event.target;
+
+    if (!file || !currentChatUser) {
+        if (!currentChatUser) alert('Please select a chat to send the file.');
+        fileInput.value = null; // Clear file input
+        return;
+    }
+
+    const clientUploadId = `upload-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+    
+    // Create and display placeholder message with progress bar
+    addUploadPlaceholder(clientUploadId, file.name);
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/upload_chat_media', true);
+    // If you use CSRF tokens and they are not in a cookie automatically sent:
+    // const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'); // Example
+    // if (csrfToken) xhr.setRequestHeader('X-CSRFToken', csrfToken);
+
+    xhr.upload.onprogress = function(e) {
+        if (e.lengthComputable) {
+            const percentComplete = Math.round((e.loaded / e.total) * 100);
+            updateUploadProgress(clientUploadId, percentComplete);
+        }
+    };
+
+    xhr.onload = function() {
+        const placeholderElement = document.getElementById(clientUploadId);
+        if (xhr.status === 200) {
+            try {
+                const data = JSON.parse(xhr.responseText);
+                if (data.success) {
+                    // The placeholder will be removed by the 'message_sent' event handler
+                    sendMediaMessage(data.file_url, data.file_type, data.original_filename, clientUploadId);
+                } else {
+                    if (placeholderElement) {
+                        updateUploadPlaceholderWithError(clientUploadId, `Upload failed: ${data.error}`);
+                    } else {
+                        alert(`File upload failed: ${data.error}`);
+                    }
+                    console.error('File upload error (server):', data.error);
+                }
+            } catch (jsonError) {
+                 if (placeholderElement) {
+                    updateUploadPlaceholderWithError(clientUploadId, 'Upload failed: Invalid server response.');
+                } else {
+                    alert('Upload failed: Invalid server response.');
+                }
+                console.error('File upload JSON parse error:', jsonError, xhr.responseText);
+            }
+        } else { // xhr.status !== 200 (e.g. 413, 500)
+            let errorMsg = `Upload failed. Server responded with status: ${xhr.status}`;
+            try { // Try to parse JSON error from server if Flask returns one for 413
+                const data = JSON.parse(xhr.responseText);
+                if (data && data.error) {
+                    errorMsg = `Upload failed: ${data.error}`;
+                }
+            } catch (e) { /* ignore if not JSON */ }
+
+            if (placeholderElement) {
+                updateUploadPlaceholderWithError(clientUploadId, errorMsg);
+            } else {
+                alert(errorMsg);
+            }
+            console.error('File upload HTTP error:', xhr.status, xhr.responseText);
+        }
+        fileInput.value = null; // Clear file input
+    };
+
+    xhr.onerror = function() {
+        const placeholderElement = document.getElementById(clientUploadId);
+        if (placeholderElement) {
+            updateUploadPlaceholderWithError(clientUploadId, 'Upload failed: Network error.');
+        } else {
+            alert('Upload failed: Network error. Please try again.');
+        }
+        console.error('File upload XHR network error.');
+        fileInput.value = null; // Clear file input
+    };
+    
+    xhr.onabort = function() {
+        const placeholderElement = document.getElementById(clientUploadId);
+        if (placeholderElement) {
+            placeholderElement.remove();
+        }
+        console.log('File upload aborted.');
+        fileInput.value = null; // Clear file input
+    };
+
+    xhr.send(formData);
+}
+
+function addUploadPlaceholder(id, filename) {
+    const container = document.getElementById('messagesContainer');
+    const placeholderDiv = document.createElement('div');
+    placeholderDiv.className = 'message sent upload-placeholder'; // Treat as sent for styling
+    placeholderDiv.id = id;
+    
+    placeholderDiv.innerHTML = `
+        <div class="message-bubble">
+            <div class="upload-progress-container">
+                <div class="upload-progress-filename">${escapeHtml(filename)}</div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progress-bar-${id}"></div>
+                </div>
+                <div class="progress-text" id="progress-text-${id}">0%</div>
+            </div>
+        </div>
+    `;
+    container.appendChild(placeholderDiv);
+    scrollToBottom();
+}
+
+function updateUploadProgress(id, percentage) {
+    const progressBar = document.getElementById(`progress-bar-${id}`);
+    const progressText = document.getElementById(`progress-text-${id}`);
+    if (progressBar) progressBar.style.width = `${percentage}%`;
+    if (progressText) progressText.textContent = `${percentage}%`;
+}
+
+function updateUploadPlaceholderWithError(id, errorMsg) {
+    const placeholderContent = document.querySelector(`#${id} .message-bubble .upload-progress-container`);
+    if (placeholderContent) {
+        placeholderContent.innerHTML = `<div class="upload-error-text">${escapeHtml(errorMsg)}</div>`;
+    }
+}
+
+// Send media message via Socket.IO
+function sendMediaMessage(fileUrl, fileType, originalFilename, clientUploadId = null) {
+    if (!currentChatUser) return;
+
+    const messagePayload = {
+        receiver: currentChatUser,
+        message: fileUrl, // This is the URL of the uploaded media
+        type: fileType,   // 'image', 'audio', 'video', 'file'
+        original_filename: originalFilename
+    };
+    if (clientUploadId) {
+        messagePayload.clientUploadId = clientUploadId;
+    }
+
+    socket.emit('send_message', messagePayload);
+}
+
+
+// Load users
+function loadUsers() {
+    fetch('/api/users')
+        .then(response => response.json())
+        .then(users => {
+            displayUsers(users);
+        })
+        .catch(error => console.error('Error loading users:', error));
+}
+
+// Search users
+function searchUsers(query) {
+    fetch(`/api/search_users?q=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(users => {
+            displayUsers(users);
+        })
+        .catch(error => console.error('Error searching users:', error));
+}
+
+// Display users in sidebar
+function displayUsers(users) {
+    const usersList = document.getElementById('usersList');
+    usersList.innerHTML = ''; // Clear existing users
+    
+    users.forEach(user => {
+        const userItem = document.createElement('div');
+        userItem.className = 'user-item';
+        if (currentChatUser === user.username) {
+            userItem.classList.add('active');
+        }
+        userItem.onclick = () => selectUser(user.username);
+        
+        const lastMessageTimeFormatted = user.last_message_time ? formatTimeForUserList(user.last_message_time) : '';
+        const unreadBadgeHtml = user.unread_count > 0 ? `<span class="unread-count-badge">${user.unread_count}</span>` : '';
+        
+        // Determine if last message preview should be bold (if unread)
+        const lastMessageClass = user.unread_count > 0 ? 'user-last-message font-weight-bold' : 'user-last-message';
+
+        userItem.innerHTML = `
+            <img src="${user.profile_photo || '/static/default_avatar_new.png'}" alt="${escapeHtml(user.name)}" class="user-avatar">
+            <div class="user-details">
+                <div class="user-info-main">
+                    <div class="user-name">${escapeHtml(user.name)}</div>
+                    <div class="${lastMessageClass}">${escapeHtml(user.last_message_content)}</div>
+                </div>
+                <div class="user-meta-info">
+                    <div class="user-message-time">${lastMessageTimeFormatted}</div>
+                    ${unreadBadgeHtml}
+                </div>
+            </div>
+        `;
+        // Note: Online/offline status (user.status, user.last_seen) is not directly included here
+        // but could be added back or indicated via avatar border, etc. if desired.
+        
+        usersList.appendChild(userItem);
+    });
+}
+
+// Select user to chat with
+function selectUser(username) {
+    if (isCallActive && username !== callTargetUser) {
+        alert("Please end the current call before switching to another chat.");
+        return;
+    }
+    // If isCallActive is true AND username IS callTargetUser, we allow proceeding
+    // to re-open the chat window of the person we are on a call with.
+
+    currentChatUser = username;
+
+    document.querySelector('.chat-container').classList.add('chat-active');
+    
+    document.querySelectorAll('.user-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    const clickedItem = Array.from(document.querySelectorAll('.user-item')).find(item => item.textContent.includes(username));
+    if (clickedItem) {
+        clickedItem.classList.add('active');
+    }
+    
+    document.getElementById('chatHeader').style.display = 'flex';
+    document.getElementById('messageInputContainer').style.display = 'flex';
+    
+    fetch('/api/users')
+        .then(response => response.json())
+        .then(users => {
+            const user = users.find(u => u.username === username);
+            if (user) {
+                document.getElementById('chatUserAvatar').src = user.profile_photo || '/static/default_avatar_new.png';
+                document.getElementById('chatUserName').textContent = user.name;
+                const statusClass = user.status === 'online' ? 'status-online' : 'status-offline';
+                const lastSeen = user.status === 'online' ? 'Online' : formatLastSeen(user.last_seen);
+                document.getElementById('chatUserStatus').innerHTML = `
+                    <span class="status-indicator ${statusClass}"></span>
+                    ${lastSeen}
+                `;
+                // Show or hide call button based on whether a user is selected
+                document.getElementById('voiceCallBtn').style.display = 'inline-flex'; 
+            } else {
+                document.getElementById('voiceCallBtn').style.display = 'none';
+            }
+        });
+    
+    loadMessages(username);
+
+    const welcomeMsg = document.querySelector('.messages-container .welcome-message');
+    if (welcomeMsg) {
+        welcomeMsg.style.display = 'none';
+    }
+    // loadUsers(); // Call loadUsers after selecting a user and messages are about to be loaded/marked read
+                 // This will be called in loadMessages's .then() now
+}
+
+// Load messages for current chat
+function loadMessages(username) {
+    const messagesContainer = document.getElementById('messagesContainer');
+    messagesContainer.innerHTML = ''; 
+    fetch(`/api/messages/${username}`)
+        .then(response => response.json())
+        .then(messages => {
+            displayMessages(messages); // This will mark messages as read
+            loadUsers(); // Refresh user list to update unread counts immediately
+        })
+        .catch(error => console.error('Error loading messages:', error));
+}
+
+// Display messages
+function displayMessages(messages) {
+    const container = document.getElementById('messagesContainer');
+    container.innerHTML = '';
+    
+    messages.forEach(message => {
+        addMessageToChat(message);
+    });
+    
+    scrollToBottom();
+}
+
+// Add message to chat display
+function addMessageToChat(message) {
+    const container = document.getElementById('messagesContainer');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${message.sender === currentUser ? 'sent' : 'received'}`;
+    messageDiv.setAttribute('data-message-id', message.id);
+    
+    const time = formatTime(message.timestamp);
+    const readStatus = message.read ? '<i class="fas fa-check-double read-status"></i>' : '<i class="fas fa-check unread-status"></i>';
+    
+    let messageContentHtml = '';
+    const messageUrl = message.message; // URL for media, text for text
+    const originalFilename = message.original_filename || 'file';
+
+    switch (message.type) {
+        case 'image':
+            messageContentHtml = `<img src="${escapeHtml(messageUrl)}" alt="Image sent by ${escapeHtml(message.sender)}" style="max-width:100%; border-radius: 8px;">`;
+            break;
+        case 'audio':
+            // Custom audio player
+            const audioId = `audio-player-${message.id}`;
+            const playBtnId = `play-btn-${message.id}`;
+            messageContentHtml = `
+                <div class="custom-audio-player">
+                    <button id="${playBtnId}" class="audio-play-pause-btn"><i class="fas fa-play"></i></button>
+                    <span class="audio-filename">${escapeHtml(originalFilename)}</span>
+                    <audio id="${audioId}" src="${escapeHtml(messageUrl)}" style="display:none;"></audio>
+                </div>
+            `;
+            break;
+        case 'video':
+            messageContentHtml = `<video controls width="300" style="max-width:100%; border-radius: 8px;" src="${escapeHtml(messageUrl)}">Your browser does not support the video tag.</video>`;
+            break;
+        case 'file':
+            messageContentHtml = `<a href="${escapeHtml(messageUrl)}" class="file-download-link" download="${escapeHtml(originalFilename)}">
+                                    <i class="fas fa-file-download"></i> Download ${escapeHtml(originalFilename)}
+                                  </a>`;
+            break;
+        case 'text':
+        default:
+            messageContentHtml = escapeHtml(message.message);
+            break;
+    }
+
+    messageDiv.innerHTML = `
+        <div class="message-bubble">
+            <div class="message-content">${messageContentHtml}</div>
+            <div class="message-time">${time}</div>
+            ${message.sender === currentUser ? `<div class="message-status">${readStatus}</div>` : ''}
+        </div>
+        <div class="message-actions">
+            ${message.sender === currentUser ? `<button class="message-action-btn" onclick="deleteMessage('${message.id}')" title="Delete"><i class="fas fa-trash"></i></button>` : ''}
+        </div>
+    `;
+    
+    container.appendChild(messageDiv);
+
+    // If it's a custom audio player, attach event listeners
+    if (message.type === 'audio') {
+        const audioPlayer = document.getElementById(`audio-player-${message.id}`);
+        const playPauseButton = document.getElementById(`play-btn-${message.id}`);
+        const playIcon = playPauseButton.querySelector('i');
+
+        if (audioPlayer && playPauseButton && playIcon) {
+            playPauseButton.addEventListener('click', () => {
+                if (audioPlayer.paused || audioPlayer.ended) {
+                    // Pause other audio players before playing this one
+                    document.querySelectorAll('audio').forEach(aud => {
+                        if (aud !== audioPlayer && !aud.paused) {
+                            aud.pause();
+                            // Reset their buttons if they are custom players
+                            const otherPlayBtn = document.getElementById(`play-btn-${aud.id.split('-').pop()}`);
+                            if(otherPlayBtn) otherPlayBtn.innerHTML = '<i class="fas fa-play"></i>';
+                        }
+                    });
+                    audioPlayer.play();
+                } else {
+                    audioPlayer.pause();
+                }
+            });
+
+            audioPlayer.addEventListener('play', () => {
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-pause');
+            });
+
+            audioPlayer.addEventListener('pause', () => {
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+            });
+
+            audioPlayer.addEventListener('ended', () => {
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+                audioPlayer.currentTime = 0; // Reset for replay
+            });
+        }
+    }
+    
+    if (message.sender !== currentUser && !message.read) {
+        socket.emit('message_read', {
+            message_id: message.id,
+            chat_with: message.sender
+        });
+    }
+}
+
+// Send message
+function sendMessage() {
+    const input = document.getElementById('messageInput');
+    const messageText = input.value.trim();
+    
+    if (!messageText || !currentChatUser) return;
+    
+    socket.emit('send_message', {
+        receiver: currentChatUser,
+        message: messageText,
+        type: 'text',
+        original_filename: null // No original filename for text messages
+    });
+    
+    input.value = '';
+}
+
+// Delete message
+function deleteMessage(messageId) {
+    if (confirm('Are you sure you want to delete this message?')) {
+        socket.emit('delete_message', {
+            message_id: messageId,
+            chat_with: currentChatUser
+        });
+    }
+}
+
+// Clear chat
+function clearChat() {
+    if (confirm('Are you sure you want to clear this chat? This action cannot be undone.')) {
+        socket.emit('clear_chat', {
+            chat_with: currentChatUser
+        });
+    }
+}
+
+// Toggle emoji picker
+function toggleEmojiPicker() {
+    const picker = document.getElementById('emojiPicker');
+    picker.style.display = picker.style.display === 'block' ? 'none' : 'block';
+}
+
+// Add emoji to message
+function addEmoji(emoji) {
+    const input = document.getElementById('messageInput');
+    input.value += emoji;
+    input.focus();
+    document.getElementById('emojiPicker').style.display = 'none';
+}
+
+// Socket event listeners
+
+// --- Voice Call Socket Event Handlers ---
+socket.on('voice_call_offer', async (data) => {
+    if (isCallActive) {
+        // User is already in a call, automatically reject or notify busy
+        socket.emit('call_rejected', { target: data.from, reason: 'busy', rejected_by: currentUser });
+        return;
+    }
+    console.log(`Incoming call offer from ${data.from}`, data.offer);
+    window.currentOffer = data.offer; // Store offer globally or in a better state management
+    window.currentOfferFrom = data.from;
+    // Fetch user details to display name
+    // This assumes /api/users can fetch a single user if needed, or we adapt
+    // For simplicity, using data.callerName if provided, otherwise data.from
+    const callerDisplayName = data.callerName || data.from;
+    showIncomingCallModal(data.from, callerDisplayName);
+});
+
+socket.on('voice_call_answer', async (data) => {
+    if (peerConnection && data.answer && callTargetUser === data.from) {
+        console.log(`Received answer from ${data.from}`, data.answer);
+        try {
+            console.log(`[${currentUser}] Setting remote description (answer) from ${data.from}`);
+            await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
+            console.log(`[${currentUser}] Remote description (answer) set successfully. Processing buffered ICE candidates for ${data.from}.`);
+            processBufferedIceCandidates(data.from); // Process any early candidates from the callee
+        } catch (error) {
+            console.error(`[${currentUser}] Error setting remote description for answer:`, error);
+            alert("Failed to establish call (processing answer).");
+            endCallHandler();
+        }
+    }
+});
+
+socket.on('ice_candidate', async (data) => {
+    // Ensure candidate is from the current call partner (callTargetUser should be set for both caller and callee at this point)
+    // or from the person who sent the offer if we are still processing that (window.currentOfferFrom)
+    const relevantPartner = callTargetUser || window.currentOfferFrom;
+
+    if (data.candidate && data.from === relevantPartner) {
+        if (peerConnection && peerConnection.remoteDescription && peerConnection.signalingState !== "closed") {
+            try {
+                console.log(`[${currentUser}] Adding received ICE candidate from ${data.from}:`, data.candidate);
+                await peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
+                console.log(`[${currentUser}] Successfully added ICE candidate from ${data.from}`);
+            } catch (error) {
+                console.error(`[${currentUser}] Error adding received ICE candidate from ${data.from}:`, error, data.candidate);
+            }
+        } else {
+            console.log(`[${currentUser}] Buffering ICE candidate from ${data.from} because peerConnection or remoteDescription is not ready (or PC closed). PC State: ${peerConnection ? peerConnection.signalingState : 'null'}. Candidate:`, data.candidate);
+            iceCandidateBuffer.push({ from: data.from, candidate: data.candidate });
+        }
+    } else {
+        console.warn(`[${currentUser}] Received ICE candidate from unexpected source or missing candidate. Data:`, data, `Relevant partner: ${relevantPartner}`);
+    }
+});
+
+socket.on('call_rejected', (data) => {
+    if (callTargetUser === data.rejected_by) { // If the person I was calling rejected
+        alert(`${data.rejected_by_name || data.rejected_by} rejected the call${data.reason ? ` (${data.reason})` : ''}.`);
+        hideActiveCallUI();
+    }
+    // No need to do anything if I rejected someone else's call, UI already handled.
+});
+
+socket.on('call_ended', (data) => {
+    // If the other party ended the call
+    if (isCallActive && (callTargetUser === data.ended_by)) {
+        alert(`Call with ${data.ended_by_name || data.ended_by} ended.`);
+        hideActiveCallUI(); // This will clean up local resources
+    }
+});
+
+
+socket.on('new_message', function(message) {
+    // Determine if the message is for the currently active chat
+    const isForCurrentChat = message.sender === currentChatUser || (message.receiver === currentUser && message.sender === currentChatUser);
+
+    if (isForCurrentChat) {
+        addMessageToChat(message); // This will mark the message as read if it's from the other user
+        scrollToBottom();
+        loadUsers(); // Refresh user list immediately after displaying new message in active chat
+    }
+    
+    // Show notification if the window is not focused OR if the message is not for the current active chat
+    if (!document.hasFocus() || !isForCurrentChat) {
+        let notificationText = message.message;
+        if (message.type !== 'text') {
+            notificationText = `[${message.type.charAt(0).toUpperCase() + message.type.slice(1)}] ${message.original_filename || ''}`;
+        }
+        showNotification(message.sender, notificationText, message.type);
+    }
+    
+    loadUsers(); // Refresh user list to show unread indicators or last message
+});
+
+socket.on('message_sent', function(message) {
+    // This event confirms the message was sent by the current user
+    if (message.sender === currentUser && message.receiver === currentChatUser) {
+        if (message.clientUploadId) {
+            const placeholderElement = document.getElementById(message.clientUploadId);
+            if (placeholderElement) {
+                placeholderElement.remove();
+            }
+        }
+        addMessageToChat(message); // Add the actual message
+        scrollToBottom();
+    }
+});
+
+socket.on('message_read_status', function(data) {
+    const messageElement = document.querySelector(`[data-message-id="${data.message_id}"] .message-status`);
+    if (messageElement) {
+        messageElement.innerHTML = '<i class="fas fa-check-double read-status"></i>';
+    }
+});
+
+socket.on('message_deleted', function(data) {
+    const messageElement = document.querySelector(`[data-message-id="${data.message_id}"]`);
+    if (messageElement) {
+        messageElement.remove();
+    }
+});
+
+socket.on('chat_cleared', function(data) {
+    if (data.chat_with === currentChatUser) {
+        document.getElementById('messagesContainer').innerHTML = '';
+    }
+});
+
+socket.on('user_status_update', function(data) {
+    loadUsers();
+    if (currentChatUser === data.username) {
+        const statusClass = data.status === 'online' ? 'status-online' : 'status-offline';
+        const statusText = data.status === 'online' ? 'Online' : 'Offline';
+        document.getElementById('chatUserStatus').innerHTML = `
+            <span class="status-indicator ${statusClass}"></span>
+            ${statusText}
+        `;
+    }
+});
+
+// Show notification
+function showNotification(sender, text, messageType = 'text') {
+    const notificationArea = document.getElementById('notificationArea') || createNotificationArea();
+    
+    fetch('/api/users')
+        .then(response => response.json())
+        .then(users => {
+            const senderUser = users.find(u => u.username === sender);
+            const displayName = senderUser ? senderUser.name : sender;
+
+            const notificationDiv = document.createElement('div');
+            notificationDiv.className = 'chat-notification';
+            
+            let displayMessage = text;
+            if (messageType !== 'text') {
+                // For media, 'text' already contains the formatted string like "[Image] filename.jpg"
+                displayMessage = text; 
+            } else {
+                 const maxLength = 50;
+                 displayMessage = text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+            }
+            
+            notificationDiv.innerHTML = `
+                <strong>New message from ${escapeHtml(displayName)}:</strong>
+                <p>${escapeHtml(displayMessage)}</p>
+            `;
+            
+            notificationArea.appendChild(notificationDiv);
+            
+            // Ensure notification sound exists or handle error
+            const audio = new Audio("{{ url_for('static', filename='notification.mp3') }}"); 
+            audio.play().catch(e => console.warn("Notification sound playback failed. Ensure /static/notification.mp3 exists.", e));
+
+            setTimeout(() => {
+                notificationDiv.style.opacity = '0';
+                setTimeout(() => {
+                    notificationDiv.remove();
+                    if (notificationArea.children.length === 0 && document.body.contains(notificationArea)) {
+                        notificationArea.remove(); 
+                    }
+                }, 500); 
+            }, 5000);
+        })
+        .catch(error => {
+            console.error('Error fetching user details for notification:', error);
+            // Fallback if user fetch fails
+            const notificationDiv = document.createElement('div');
+            notificationDiv.className = 'chat-notification';
+            let displayMessage = text;
+            if (messageType !== 'text') {
+                displayMessage = text;
+            } else {
+                const maxLength = 50;
+                displayMessage = text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+            }
+            notificationDiv.innerHTML = `<strong>New message from ${escapeHtml(sender)}:</strong><p>${escapeHtml(displayMessage)}</p>`;
+            notificationArea.appendChild(notificationDiv);
+            
+            const audio = new Audio("{{ url_for('static', filename='notification.mp3') }}"); 
+            audio.play().catch(e => console.warn("Notification sound playback failed. Ensure /static/notification.mp3 exists.", e));
+
+            setTimeout(() => {
+                notificationDiv.style.opacity = '0';
+                setTimeout(() => {
+                    notificationDiv.remove();
+                     if (notificationArea.children.length === 0 && document.body.contains(notificationArea)) {
+                        notificationArea.remove(); 
+                    }
+                }, 500);
+            }, 5000);
+        });
+}
+
+function createNotificationArea() {
+    let area = document.getElementById('notificationArea');
+    if (!area) {
+        area = document.createElement('div');
+        area.id = 'notificationArea';
+        area.style.position = 'fixed';
+        area.style.top = '70px'; 
+        area.style.right = '20px';
+        area.style.zIndex = '10000'; 
+        area.style.display = 'flex';
+        area.style.flexDirection = 'column';
+        area.style.gap = '10px'; 
+        document.body.appendChild(area);
+    }
+    return area;
+}
+
+// Utility functions
+function formatTime(timestamp) {
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function formatTimeForUserList(timestamp) {
+    if (!timestamp) return '';
+    const messageDate = new Date(timestamp);
+    const now = new Date();
+    
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const startOfYesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+
+    if (messageDate >= startOfToday) {
+        return messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } else if (messageDate >= startOfYesterday) {
+        return 'Yesterday';
+    } else {
+        // For older than yesterday, show date like DD/MM/YYYY
+        const day = String(messageDate.getDate()).padStart(2, '0');
+        const month = String(messageDate.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+        const year = messageDate.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+}
+
+
+function formatLastSeen(timestamp) {
+    if (!timestamp) return 'Offline'; // Default if no timestamp
+
+    const lastSeenDate = new Date(timestamp);
+    const now = new Date();
+
+    const timeFormatter = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+    const formattedTime = timeFormatter.format(lastSeenDate);
+
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+    const lastSeenDay = new Date(lastSeenDate.getFullYear(), lastSeenDate.getMonth(), lastSeenDate.getDate());
+
+    if (lastSeenDay.getTime() === today.getTime()) {
+        return `today at ${formattedTime}`;
+    } else if (lastSeenDay.getTime() === yesterday.getTime()) {
+        return `yesterday at ${formattedTime}`;
+    } else if ((today.getTime() - lastSeenDay.getTime()) < (7 * 24 * 60 * 60 * 1000)) {
+        // Within the last week (but not today or yesterday)
+        const dayFormatter = new Intl.DateTimeFormat('en-US', { weekday: 'long' });
+        const dayName = dayFormatter.format(lastSeenDate);
+        return `on ${dayName} at ${formattedTime}`;
+    } else {
+        const dateFormatter = new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        return `on ${dateFormatter.format(lastSeenDate)} at ${formattedTime}`;
+    }
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function scrollToBottom() {
+    const container = document.getElementById('messagesContainer');
+    container.scrollTop = container.scrollHeight;
+}
+
+// Close emoji picker when clicking outside
+document.addEventListener('click', function(e) {
+    const picker = document.getElementById('emojiPicker');
+    const emojiBtn = document.querySelector('.emoji-btn');
+    
+    if (picker && emojiBtn && !picker.contains(e.target) && !emojiBtn.contains(e.target)) {
+        picker.style.display = 'none';
+    }
+});
+</script>
+
+{% endblock %}
