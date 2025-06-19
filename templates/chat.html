@@ -83,13 +83,6 @@
                 </div>
                 
                 <div class="message-input-container" id="messageInputContainer" style="display: none;">
-                    <button class="emoji-btn" onclick="toggleEmojiPicker()" title="Emoji">
-                        <i class="fas fa-smile"></i>
-                    </button>
-                    <button class="attach-btn" id="attachFileBtn" title="Attach file">
-                        <i class="fas fa-paperclip"></i>
-                    </button>
-                    <input type="file" id="mediaFile" style="display:none;" accept="image/*,.heic,.heif,audio/*,video/*,.pdf,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx,.zip,.rar">
                     <div id="replyPreviewContainer" class="reply-preview-container" style="display: none;">
                         <div class="reply-preview-content">
                             <div class="reply-preview-header">Replying to <strong id="replyPreviewSender"></strong></div>
@@ -97,10 +90,19 @@
                         </div>
                         <button class="cancel-reply-btn" onclick="cancelReply()" title="Cancel reply">&times;</button>
                     </div>
-                    <input type="text" id="messageInput" placeholder="Type a message..." maxlength="1000">
-                    <button class="send-btn" onclick="sendMessage()" title="Send">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
+                    <div class="message-input-row">
+                        <button class="emoji-btn" onclick="toggleEmojiPicker()" title="Emoji">
+                            <i class="fas fa-smile"></i>
+                        </button>
+                        <button class="attach-btn" id="attachFileBtn" title="Attach file">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <input type="file" id="mediaFile" style="display:none;" accept="image/*,.heic,.heif,audio/*,video/*,.pdf,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx,.zip,.rar">
+                        <input type="text" id="messageInput" placeholder="Type a message..." maxlength="1000">
+                        <button class="send-btn" onclick="sendMessage()" title="Send">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -417,10 +419,13 @@
     margin-bottom: -1px; /* Overlap with message input's top border */
     font-size: 0.9em;
     color: #333;
+    width: 100%; /* Ensure it takes full width when message-input-container is column */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 .reply-preview-content {
     flex-grow: 1;
     overflow: hidden; /* For text ellipsis */
+    padding-right: 5px; /* Add some space before the cancel button */
 }
 .reply-preview-header {
     font-size: 0.9em;
@@ -699,13 +704,33 @@
 
 
 .message-input-container {
-    padding: 15px 20px;
+    padding: 10px 15px; /* Slightly reduced padding for mobile */
     border-top: 1px solid #e0e0e0;
     background: white;
     display: flex;
-    align-items: center;
-    gap: 10px;
+    align-items: center; /* Align items to center for the row layout */
+    gap: 8px; /* Reduced gap for mobile */
+    flex-wrap: nowrap; /* Prevent wrapping of main items by default */
 }
+
+/* When reply preview is active, change to column layout */
+.message-input-container.reply-active {
+    flex-direction: column;
+    align-items: stretch; /* Stretch items to full width */
+    padding-top: 0; /* Remove top padding as reply preview has its own */
+}
+/* Ensure input and buttons take full width in column mode if needed, or adjust specific items */
+.message-input-container.reply-active #messageInput {
+    margin-top: 8px; /* Add some space above the input field when reply is active */
+}
+/* The actual input row (buttons and text input) */
+.message-input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
 
 .emoji-btn {
     background: none;
@@ -2027,6 +2052,7 @@ function startReply(messageId) {
     document.getElementById('replyPreviewSender').textContent = senderName;
     document.getElementById('replyPreviewText').textContent = previewText;
     document.getElementById('replyPreviewContainer').style.display = 'flex';
+    document.getElementById('messageInputContainer').classList.add('reply-active'); // Add class for layout change
     document.getElementById('messageInput').focus();
 }
 
@@ -2034,6 +2060,7 @@ function cancelReply() {
     replyingToMessageId = null;
     replyingToMessageData = null;
     document.getElementById('replyPreviewContainer').style.display = 'none';
+    document.getElementById('messageInputContainer').classList.remove('reply-active'); // Remove class
     document.getElementById('replyPreviewSender').textContent = '';
     document.getElementById('replyPreviewText').textContent = '';
 }
