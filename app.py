@@ -697,6 +697,66 @@ def handle_call_ended(data):
     logger.info(f"Relaying call ended by {ended_by} to {target_user}")
     emit('call_ended', {'ended_by': ended_by, 'ended_by_name': ended_by_name}, room=target_user)
 
+# Typing Indicator Events
+@socketio.on('typing_start')
+def handle_typing_start(data):
+    if 'username' not in session:
+        return # Not authenticated
+    
+    sender_username = data.get('sender')
+    receiver_username = data.get('receiver')
+
+    if not sender_username or not receiver_username:
+        logger.warning(f"Invalid typing_start data: {data}")
+        return
+
+    # Ensure the sender from the data matches the session user for security/consistency
+    if sender_username != session['username']:
+        logger.warning(f"Typing_start sender mismatch. Session: {session['username']}, Data: {sender_username}")
+        return
+
+    logger.info(f"User {sender_username} started typing to {receiver_username}")
+    emit('user_typing', {'sender': sender_username}, room=receiver_username)
+
+@socketio.on('typing_stop')
+def handle_typing_stop(data):
+    if 'username' not in session:
+        return # Not authenticated
+
+    sender_username = data.get('sender')
+    receiver_username = data.get('receiver')
+
+    if not sender_username or not receiver_username:
+        logger.warning(f"Invalid typing_stop data: {data}")
+        return
+    
+    if sender_username != session['username']:
+        logger.warning(f"Typing_stop sender mismatch. Session: {session['username']}, Data: {sender_username}")
+        return
+
+    logger.info(f"User {sender_username} stopped typing to {receiver_username}")
+    emit('user_stopped_typing', {'sender': sender_username}, room=receiver_username)
+
+
+@socketio.on('typing')
+def handle_typing(data):
+    if 'username' not in session:
+        return
+    
+    recipient = data.get('recipient')
+    if recipient:
+        logger.info(f"User {session['username']} is typing to {recipient}")
+        emit('user_typing', {'username': session['username']}, room=recipient)
+
+@socketio.on('stop_typing')
+def handle_stop_typing(data):
+    if 'username' not in session:
+        return
+        
+    recipient = data.get('recipient')
+    if recipient:
+        logger.info(f"User {session['username']} stopped typing to {recipient}")
+        emit('user_stopped_typing', {'username': session['username']}, room=recipient)
 
 @app.errorhandler(413)
 def too_large(e):

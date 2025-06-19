@@ -452,8 +452,129 @@
       "type": "video",
       "original_filename": "_03s__202506151226_sfbh7.mp4",
       "timestamp": "2025-06-18T17:57:11.679915",
-      "read": false,
+      "read": true,
       "clientUploadId": "upload-1750249631661-9iq3c"
+    },
+    {
+      "id": "c1a1a321-e959-4e05-ab70-ae1b55e75ad7",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "heh",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-19T12:54:44.103112",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "7a848296-c206-4514-a847-a82da5e89537",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "/static/chat_media/8048d78b-581b-4bcd-a477-cead41e8ab32.jpg",
+      "type": "image",
+      "original_filename": "images.jpg",
+      "timestamp": "2025-06-19T13:09:30.513258",
+      "read": true,
+      "clientUploadId": "upload-1750318770503-505fb"
+    },
+    {
+      "id": "fc21852b-0e4e-4cf5-b6fc-b240cd6b291e",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "/static/chat_media/9a918ef1-0db7-44a1-a2f2-5f418e3d3d68.mp4",
+      "type": "video",
+      "original_filename": "_03s__202506151226_sfbh7.mp4",
+      "timestamp": "2025-06-19T13:09:40.413966",
+      "read": true,
+      "clientUploadId": "upload-1750318780369-b2lt6"
+    },
+    {
+      "id": "7ad1bda5-1214-44ca-b630-f0e416511e49",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "hhj",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-19T13:11:12.787943",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "9885859a-b62a-4856-9876-be0177e50b16",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "ddsd",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-19T13:12:32.311482",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "16dde4f1-0b1b-4f39-8398-f7ef7bc336c2",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "ddfd",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-19T13:12:38.528484",
+      "read": true,
+      "clientUploadId": null
+    },
+    {
+      "id": "399592b9-b54a-4860-9794-fea6bacaf1a4",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "/static/chat_media/795576b7-650e-4b1c-bfdd-446e164ddbf7.jpg",
+      "type": "image",
+      "original_filename": "b31399b0-a191-4352-9ad6-ba7f62630afb.jpg",
+      "timestamp": "2025-06-19T13:12:44.658087",
+      "read": true,
+      "clientUploadId": "upload-1750318964327-y68oi"
+    },
+    {
+      "id": "33bb37fa-9509-4eb0-92be-db6b8f80ddb5",
+      "sender": "chamika",
+      "receiver": "admin",
+      "message": "/static/chat_media/1442f293-c89f-4e7a-8337-06e6e788f60e.png",
+      "type": "image",
+      "original_filename": "artwork (4) (1).png",
+      "timestamp": "2025-06-19T13:12:54.505190",
+      "read": true,
+      "clientUploadId": "upload-1750318974185-3lz7u"
+    },
+    {
+      "id": "33c348ed-97cf-43d1-bc40-9228631b6f9c",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "/static/chat_media/6c83954e-0c1b-4714-b7a6-d5a9719ac48e.jpg",
+      "type": "image",
+      "original_filename": "images.jpg",
+      "timestamp": "2025-06-19T13:13:31.060012",
+      "read": true,
+      "clientUploadId": "upload-1750319011044-ves47"
+    },
+    {
+      "id": "476ab8e8-e4a7-4960-bf64-c85599284916",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "/static/chat_media/5f3cc6bc-2851-465b-81a6-a83c4e0d80e0.mp4",
+      "type": "video",
+      "original_filename": "videoplayback.mp4",
+      "timestamp": "2025-06-19T13:13:37.899718",
+      "read": true,
+      "clientUploadId": "upload-1750319017857-nvurq"
+    },
+    {
+      "id": "409b25be-f31a-4d33-81ff-def5eb90d8eb",
+      "sender": "admin",
+      "receiver": "chamika",
+      "message": "/static/chat_media/b69a8fc8-b114-4a77-9daf-4954db881e58.png",
+      "type": "image",
+      "original_filename": "ChatGPT Image Apr 13, 2025, 06_27_38 PM.png",
+      "timestamp": "2025-06-19T13:13:53.778973",
+      "read": false,
+      "clientUploadId": "upload-1750319033710-65r20"
     }
   ],
   "Ishan_johndoe2": [

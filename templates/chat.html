@@ -34,6 +34,7 @@
                         <div>
                             <div class="user-name" id="chatUserName"></div>
                             <div class="user-status" id="chatUserStatus"></div>
+                            <div class="typing-indicator" id="typingIndicator" style="display: none;">typing...</div>
                         </div>
                     </div>
                     <div class="chat-actions">
@@ -115,6 +116,13 @@
     <div class="emoji" onclick="addEmoji('🔥')">🔥</div>
     <div class="emoji" onclick="addEmoji('✨')">✨</div>
     <div class="emoji" onclick="addEmoji('🎉')">🎉</div>
+</div>
+
+<!-- Image Preview Modal -->
+<div id="imagePreviewModal" class="image-preview-modal" style="display: none;">
+    <span class="close-preview-btn" onclick="closeImagePreview()">&times;</span>
+    <img class="image-preview-content" id="previewImage">
+    <div id="imagePreviewCaption" class="image-preview-caption"></div>
 </div>
 
 <style>
@@ -363,6 +371,13 @@
     justify-content: center;
     /* padding: 8px; /* Already in .btn-icon */
     /* font-size: 18px; /* Adjust if needed */
+}
+
+.typing-indicator {
+    font-size: 0.8em;
+    color: #007bff; /* Or a theme color */
+    margin-left: 5px;
+    font-style: italic;
 }
 
 .messages-container {
@@ -806,6 +821,56 @@
     opacity: 0.8;
 }
 
+/* Image Preview Modal Styles */
+.image-preview-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 3000; /* Sit on top */
+    padding-top: 50px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    text-align: center; /* Center the image */
+}
+
+.image-preview-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 80vh; /* Adjust as needed, considering close button and caption */
+    border-radius: 5px;
+}
+
+.close-preview-btn {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.close-preview-btn:hover,
+.close-preview-btn:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#imagePreviewCaption {
+    margin: 15px auto;
+    display: block;
+    width: 80%;
+    text-align: center;
+    color: #ccc;
+    font-size: 1em;
+}
+
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.7.2/dist/socket.io.min.js"></script>
@@ -833,6 +898,9 @@ const remoteAudioEl = document.getElementById('remoteAudio');
 
 
 // Initialize
+let typingTimeout = null;
+const TYPING_TIMER_LENGTH = 2000; // 2 seconds
+
 document.addEventListener('DOMContentLoaded', function() {
     loadUsers();
     
@@ -847,10 +915,22 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Enter key to send message
-    document.getElementById('messageInput').addEventListener('keypress', function(e) {
+    const messageInput = document.getElementById('messageInput');
+    messageInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             sendMessage();
         }
+    });
+
+    messageInput.addEventListener('input', () => {
+        if (!currentChatUser) return;
+        
+        socket.emit('typing_start', { receiver: currentChatUser, sender: currentUser });
+        
+        clearTimeout(typingTimeout);
+        typingTimeout = setTimeout(() => {
+            socket.emit('typing_stop', { receiver: currentChatUser, sender: currentUser });
+        }, TYPING_TIMER_LENGTH);
     });
 
     // Back button functionality
@@ -1447,7 +1527,8 @@ function selectUser(username) {
                     ${lastSeen}
                 `;
                 // Show or hide call button based on whether a user is selected
-                document.getElementById('voiceCallBtn').style.display = 'inline-flex'; 
+                document.getElementById('voiceCallBtn').style.display = 'inline-flex';
+                document.getElementById('typingIndicator').style.display = 'none'; // Hide typing indicator when switching users
             } else {
                 document.getElementById('voiceCallBtn').style.display = 'none';
             }
@@ -1504,7 +1585,8 @@ function addMessageToChat(message) {
 
     switch (message.type) {
         case 'image':
-            messageContentHtml = `<img src="${escapeHtml(messageUrl)}" alt="Image sent by ${escapeHtml(message.sender)}" style="max-width:100%; border-radius: 8px;">`;
+            // Add onclick for image preview
+            messageContentHtml = `<img src="${escapeHtml(messageUrl)}" alt="Image by ${escapeHtml(message.sender)}" style="max-width:100%; border-radius: 8px; cursor:pointer;" onclick="openImagePreview('${escapeHtml(messageUrl)}', 'Image by ${escapeHtml(message.sender)}')">`;
             break;
         case 'audio':
             // Custom audio player
@@ -1609,6 +1691,12 @@ function sendMessage() {
         original_filename: null // No original filename for text messages
     });
     
+    // Stop typing indicator when message is sent
+    clearTimeout(typingTimeout);
+    socket.emit('typing_stop', { receiver: currentChatUser, sender: currentUser });
+    document.getElementById('typingIndicator').style.display = 'none';
+
+
     input.value = '';
 }
 
@@ -1644,6 +1732,32 @@ function addEmoji(emoji) {
     input.focus();
     document.getElementById('emojiPicker').style.display = 'none';
 }
+
+// Image Preview Functions
+function openImagePreview(imageUrl, captionText) {
+    const modal = document.getElementById('imagePreviewModal');
+    const modalImg = document.getElementById('previewImage');
+    const caption = document.getElementById('imagePreviewCaption');
+
+    modal.style.display = "block";
+    modalImg.src = imageUrl;
+    caption.textContent = captionText || ''; // Display caption if provided
+}
+
+function closeImagePreview() {
+    const modal = document.getElementById('imagePreviewModal');
+    modal.style.display = "none";
+    document.getElementById('previewImage').src = ""; // Clear image src
+    document.getElementById('imagePreviewCaption').textContent = ""; // Clear caption
+}
+
+// Close modal if user clicks outside the image content (optional)
+document.getElementById('imagePreviewModal').addEventListener('click', function(event) {
+    if (event.target === this) { // Check if the click is on the modal background itself
+        closeImagePreview();
+    }
+});
+
 
 // Socket event listeners
 
@@ -1719,12 +1833,30 @@ socket.on('call_ended', (data) => {
     }
 });
 
+socket.on('user_typing', function(data) {
+    if (data.sender === currentChatUser) {
+        document.getElementById('typingIndicator').style.display = 'inline';
+        document.getElementById('chatUserStatus').style.display = 'none'; // Optionally hide status
+    }
+});
+
+socket.on('user_stopped_typing', function(data) {
+    if (data.sender === currentChatUser) {
+        document.getElementById('typingIndicator').style.display = 'none';
+        document.getElementById('chatUserStatus').style.display = 'inline'; // Restore status
+    }
+});
 
 socket.on('new_message', function(message) {
     // Determine if the message is for the currently active chat
     const isForCurrentChat = message.sender === currentChatUser || (message.receiver === currentUser && message.sender === currentChatUser);
 
     if (isForCurrentChat) {
+        // Hide typing indicator if the sender of the new message is the one who was typing
+        if (message.sender === currentChatUser) {
+            document.getElementById('typingIndicator').style.display = 'none';
+            document.getElementById('chatUserStatus').style.display = 'inline'; // Restore status
+        }
         addMessageToChat(message); // This will mark the message as read if it's from the other user
         scrollToBottom();
         loadUsers(); // Refresh user list immediately after displaying new message in active chat
