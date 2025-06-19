@@ -573,8 +573,110 @@
       "type": "image",
       "original_filename": "ChatGPT Image Apr 13, 2025, 06_27_38 PM.png",
       "timestamp": "2025-06-19T13:13:53.778973",
-      "read": false,
+      "read": true,
       "clientUploadId": "upload-1750319033710-65r20"
+    },
+    {
+      "id": "ceefeaf1-b391-49e9-8b40-c6e01db6858d",
+      "sender": "admin",
+      "sender_name": "admin",
+      "receiver": "chamika",
+      "message": "vvf",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-19T13:23:16.845621",
+      "read": true,
+      "clientUploadId": null,
+      "replied_to_id": null,
+      "replied_to_message_details": null
+    },
+    {
+      "id": "635966cb-7b75-4acb-b95f-234bd381f0a8",
+      "sender": "admin",
+      "sender_name": "admin",
+      "receiver": "chamika",
+      "message": "heye",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-19T13:23:26.804489",
+      "read": true,
+      "clientUploadId": null,
+      "replied_to_id": null,
+      "replied_to_message_details": null
+    },
+    {
+      "id": "3d0489a1-a7f9-4076-9d42-98bd00db6ba2",
+      "sender": "chamika",
+      "sender_name": "chamika",
+      "receiver": "admin",
+      "message": "ddh",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-19T13:23:33.122488",
+      "read": true,
+      "clientUploadId": null,
+      "replied_to_id": "635966cb-7b75-4acb-b95f-234bd381f0a8",
+      "replied_to_message_details": {
+        "sender": "admin",
+        "sender_name": "admin",
+        "content": "heye",
+        "type": "text",
+        "original_filename": null
+      }
+    },
+    {
+      "id": "cf5ddd1c-bddc-406e-a589-d3298d22f342",
+      "sender": "chamika",
+      "sender_name": "chamika",
+      "receiver": "admin",
+      "message": "how are you",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-19T13:23:42.290843",
+      "read": true,
+      "clientUploadId": null,
+      "replied_to_id": null,
+      "replied_to_message_details": null
+    },
+    {
+      "id": "623c79e7-a8ae-4182-873e-f22af82066b9",
+      "sender": "admin",
+      "sender_name": "admin",
+      "receiver": "chamika",
+      "message": "im fine",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-19T13:23:50.152691",
+      "read": true,
+      "clientUploadId": null,
+      "replied_to_id": "cf5ddd1c-bddc-406e-a589-d3298d22f342",
+      "replied_to_message_details": {
+        "sender": "chamika",
+        "sender_name": "chamika",
+        "content": "how are you",
+        "type": "text",
+        "original_filename": null
+      }
+    },
+    {
+      "id": "ea5e223b-34d7-4cf0-b6aa-66c116101bbe",
+      "sender": "admin",
+      "sender_name": "admin",
+      "receiver": "chamika",
+      "message": "kk",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-19T13:24:04.129690",
+      "read": false,
+      "clientUploadId": null,
+      "replied_to_id": "623c79e7-a8ae-4182-873e-f22af82066b9",
+      "replied_to_message_details": {
+        "sender": "admin",
+        "sender_name": "admin",
+        "content": "im fine",
+        "type": "text",
+        "original_filename": null
+      }
     }
   ],
   "Ishan_johndoe2": [

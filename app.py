@@ -490,6 +490,7 @@ def handle_send_message(data):
         message_type = data.get('type', 'text') # 'text', 'image', 'audio', 'video', 'file'
         original_filename = data.get('original_filename') # For 'file' type primarily, but can be sent for all media
         client_upload_id = data.get('clientUploadId') # Client-side ID for upload placeholder
+        replied_to_id = data.get('replied_to_id') # ID of the message being replied to
         
         # Validate input
         if not receiver:
@@ -509,19 +510,52 @@ def handle_send_message(data):
         if receiver not in users:
             emit('error', {'message': 'Recipient not found'})
             return
+
+        sender_name = users.get(sender, {}).get('name', sender) # Get sender's display name
         
         message_data = {
             'id': str(uuid.uuid4()),
             'sender': sender,
+            'sender_name': sender_name, # Add sender's display name
             'receiver': receiver,
             'message': message, # URL for media, text for text
             'type': message_type,
             'original_filename': original_filename, # Store original filename
             'timestamp': get_current_time(),
             'read': False,
-            'clientUploadId': client_upload_id # Include clientUploadId if present
+            'clientUploadId': client_upload_id, # Include clientUploadId if present
+            'replied_to_id': None, # Initialize
+            'replied_to_message_details': None # Initialize
         }
-        
+
+        # Handle reply
+        if replied_to_id:
+            messages_all_chats = load_json(MESSAGES_FILE)
+            chat_key_for_original_msg = f"{min(sender, receiver)}_{max(sender, receiver)}" # Assuming reply is within same chat
+            original_message_found = None
+            if chat_key_for_original_msg in messages_all_chats:
+                for msg_item in messages_all_chats[chat_key_for_original_msg]:
+                    if msg_item['id'] == replied_to_id:
+                        original_message_found = msg_item
+                        break
+            
+            if original_message_found:
+                original_sender_username = original_message_found.get('sender')
+                original_sender_name = users.get(original_sender_username, {}).get('name', original_sender_username)
+                
+                message_data['replied_to_id'] = replied_to_id
+                message_data['replied_to_message_details'] = {
+                    'sender': original_sender_username,
+                    'sender_name': original_sender_name,
+                    'content': original_message_found.get('message'),
+                    'type': original_message_found.get('type'),
+                    'original_filename': original_message_found.get('original_filename')
+                }
+            else:
+                logger.warning(f"Replied message ID {replied_to_id} not found.")
+                # Decide if you want to send the message without reply context or error out
+                # For now, it will send without reply context if original not found.
+
         # Save message
         messages = load_json(MESSAGES_FILE)
         chat_key = f"{min(sender, receiver)}_{max(sender, receiver)}"

@@ -90,6 +90,13 @@
                         <i class="fas fa-paperclip"></i>
                     </button>
                     <input type="file" id="mediaFile" style="display:none;" accept="image/*,.heic,.heif,audio/*,video/*,.pdf,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx,.zip,.rar">
+                    <div id="replyPreviewContainer" class="reply-preview-container" style="display: none;">
+                        <div class="reply-preview-content">
+                            <div class="reply-preview-header">Replying to <strong id="replyPreviewSender"></strong></div>
+                            <div id="replyPreviewText"></div>
+                        </div>
+                        <button class="cancel-reply-btn" onclick="cancelReply()" title="Cancel reply">&times;</button>
+                    </div>
                     <input type="text" id="messageInput" placeholder="Type a message..." maxlength="1000">
                     <button class="send-btn" onclick="sendMessage()" title="Send">
                         <i class="fas fa-paper-plane"></i>
@@ -380,6 +387,47 @@
     font-style: italic;
 }
 
+.reply-preview-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background-color: #f0f0f0; /* Light grey background */
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0; /* Add border to message input container instead if preferred */
+    margin-bottom: -1px; /* Overlap with message input's top border */
+    font-size: 0.9em;
+    color: #333;
+}
+.reply-preview-content {
+    flex-grow: 1;
+    overflow: hidden; /* For text ellipsis */
+}
+.reply-preview-header {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 2px;
+}
+#replyPreviewText {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-style: italic;
+    color: #666;
+}
+.cancel-reply-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #888;
+    cursor: pointer;
+    padding: 0 5px;
+}
+.cancel-reply-btn:hover {
+    color: #333;
+}
+
+
 .messages-container {
     flex: 1;
     padding: 20px;
@@ -593,6 +641,43 @@
 .message-action-btn:hover {
     background: rgba(0,0,0,0.1);
 }
+
+.message-bubble .replied-message-preview {
+    background-color: rgba(0,0,0,0.05); /* Slightly darker for sent, lighter for received */
+    padding: 8px 10px;
+    margin: -5px -8px 8px -8px; /* Adjust to fit nicely */
+    border-radius: 10px;
+    border-left: 3px solid #007bff; /* Theme color or a distinct reply color */
+    font-size: 0.9em;
+}
+.message.sent .message-bubble .replied-message-preview {
+    background-color: rgba(255,255,255,0.1);
+    border-left-color: #fff; /* White or light color for sent replies */
+}
+.message.received .message-bubble .replied-message-preview {
+    border-left-color: #128C7E; /* Theme color for received replies */
+}
+.replied-message-preview .replied-sender {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 3px;
+    color: #333;
+}
+.message.sent .replied-message-preview .replied-sender {
+    color: #eee;
+}
+.replied-message-preview .replied-text {
+    font-style: italic;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block; /* Ensure it takes full width for ellipsis */
+}
+.message.sent .replied-message-preview .replied-text {
+    color: #ddd;
+}
+
 
 .message-input-container {
     padding: 15px 20px;
@@ -900,6 +985,8 @@ const remoteAudioEl = document.getElementById('remoteAudio');
 // Initialize
 let typingTimeout = null;
 const TYPING_TIMER_LENGTH = 2000; // 2 seconds
+let replyingToMessageId = null;
+let replyingToMessageData = null; // To store {id, sender, content, type}
 
 document.addEventListener('DOMContentLoaded', function() {
     loadUsers();
@@ -1575,10 +1662,43 @@ function addMessageToChat(message) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${message.sender === currentUser ? 'sent' : 'received'}`;
     messageDiv.setAttribute('data-message-id', message.id);
-    
+    messageDiv.setAttribute('data-message-content', message.message); // Store raw content for reply
+    messageDiv.setAttribute('data-message-sender-name', message.sender_name || message.sender); // Store sender name
+    messageDiv.setAttribute('data-message-type', message.type || 'text');
+
+
     const time = formatTime(message.timestamp);
     const readStatus = message.read ? '<i class="fas fa-check-double read-status"></i>' : '<i class="fas fa-check unread-status"></i>';
     
+    let repliedMessagePreviewHtml = '';
+    if (message.replied_to_message_details) {
+        const repliedSender = escapeHtml(message.replied_to_message_details.sender_name || message.replied_to_message_details.sender);
+        let repliedContentSnippet = '';
+        const repliedType = message.replied_to_message_details.type || 'text';
+        const repliedOriginalContent = message.replied_to_message_details.content;
+
+        if (repliedType === 'text') {
+            repliedContentSnippet = escapeHtml(repliedOriginalContent.substring(0, 50) + (repliedOriginalContent.length > 50 ? '...' : ''));
+        } else if (repliedType === 'image') {
+            repliedContentSnippet = '📷 Image';
+        } else if (repliedType === 'audio') {
+            repliedContentSnippet = `🎵 ${escapeHtml(message.replied_to_message_details.original_filename || 'Audio')}`;
+        } else if (repliedType === 'video') {
+            repliedContentSnippet = `🎬 ${escapeHtml(message.replied_to_message_details.original_filename || 'Video')}`;
+        } else if (repliedType === 'file') {
+            repliedContentSnippet = `📄 ${escapeHtml(message.replied_to_message_details.original_filename || 'File')}`;
+        } else {
+            repliedContentSnippet = 'Unsupported message type';
+        }
+
+        repliedMessagePreviewHtml = `
+            <div class="replied-message-preview">
+                <strong class="replied-sender">${repliedSender}</strong>
+                <span class="replied-text">${repliedContentSnippet}</span>
+            </div>
+        `;
+    }
+
     let messageContentHtml = '';
     const messageUrl = message.message; // URL for media, text for text
     const originalFilename = message.original_filename || 'file';
@@ -1616,11 +1736,13 @@ function addMessageToChat(message) {
 
     messageDiv.innerHTML = `
         <div class="message-bubble">
+            ${repliedMessagePreviewHtml}
             <div class="message-content">${messageContentHtml}</div>
             <div class="message-time">${time}</div>
             ${message.sender === currentUser ? `<div class="message-status">${readStatus}</div>` : ''}
         </div>
         <div class="message-actions">
+            <button class="message-action-btn" onclick="startReply('${message.id}')" title="Reply"><i class="fas fa-reply"></i></button>
             ${message.sender === currentUser ? `<button class="message-action-btn" onclick="deleteMessage('${message.id}')" title="Delete"><i class="fas fa-trash"></i></button>` : ''}
         </div>
     `;
@@ -1683,20 +1805,26 @@ function sendMessage() {
     const messageText = input.value.trim();
     
     if (!messageText || !currentChatUser) return;
-    
-    socket.emit('send_message', {
+
+    let payload = {
         receiver: currentChatUser,
         message: messageText,
         type: 'text',
         original_filename: null // No original filename for text messages
-    });
+    };
+
+    if (replyingToMessageId) {
+        payload.replied_to_id = replyingToMessageId;
+    }
+    
+    socket.emit('send_message', payload);
     
     // Stop typing indicator when message is sent
     clearTimeout(typingTimeout);
     socket.emit('typing_stop', { receiver: currentChatUser, sender: currentUser });
     document.getElementById('typingIndicator').style.display = 'none';
 
-
+    cancelReply(); // Clear reply state after sending
     input.value = '';
 }
 
@@ -1732,6 +1860,53 @@ function addEmoji(emoji) {
     input.focus();
     document.getElementById('emojiPicker').style.display = 'none';
 }
+
+// Reply Functions
+function startReply(messageId) {
+    const messageElement = document.querySelector(`.message[data-message-id="${messageId}"]`);
+    if (!messageElement) return;
+
+    const senderName = messageElement.getAttribute('data-message-sender-name');
+    let content = messageElement.getAttribute('data-message-content');
+    const type = messageElement.getAttribute('data-message-type');
+    
+    replyingToMessageId = messageId;
+    // Store full data for potential backend use if needed, or just what's needed for preview
+    replyingToMessageData = { id: messageId, sender: senderName, content: content, type: type };
+
+
+    let previewText = '';
+    if (type === 'text') {
+        previewText = content.substring(0, 70) + (content.length > 70 ? '...' : '');
+    } else if (type === 'image') {
+        previewText = '📷 Image';
+    } else if (type === 'audio') {
+        // For media, original_filename might be better, but we don't have it directly here without fetching full message object
+        // For now, using generic type. This can be enhanced if full message objects are stored client-side.
+        previewText = `🎵 Audio`;
+    } else if (type === 'video') {
+        previewText = `🎬 Video`;
+    } else if (type === 'file') {
+        previewText = `📄 File`;
+    } else {
+        previewText = 'Message';
+    }
+
+
+    document.getElementById('replyPreviewSender').textContent = senderName;
+    document.getElementById('replyPreviewText').textContent = previewText;
+    document.getElementById('replyPreviewContainer').style.display = 'flex';
+    document.getElementById('messageInput').focus();
+}
+
+function cancelReply() {
+    replyingToMessageId = null;
+    replyingToMessageData = null;
+    document.getElementById('replyPreviewContainer').style.display = 'none';
+    document.getElementById('replyPreviewSender').textContent = '';
+    document.getElementById('replyPreviewText').textContent = '';
+}
+
 
 // Image Preview Functions
 function openImagePreview(imageUrl, captionText) {
