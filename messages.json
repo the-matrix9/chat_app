@@ -701,7 +701,7 @@
       "type": "text",
       "original_filename": null,
       "timestamp": "2025-06-19T13:53:53.303865",
-      "read": false,
+      "read": true,
       "clientUploadId": null,
       "replied_to_id": "ea5e223b-34d7-4cf0-b6aa-66c116101bbe",
       "replied_to_message_details": {
@@ -711,6 +711,34 @@
         "type": "text",
         "original_filename": null
       }
+    },
+    {
+      "id": "13bb1a75-b91d-40e8-a3eb-bfb30dffd9b8",
+      "sender": "chamika",
+      "sender_name": "chamika",
+      "receiver": "admin",
+      "message": "/static/chat_media/77ecb53e-c019-4f50-9082-1f10de0d9cc2.jpeg",
+      "type": "image",
+      "original_filename": "â__A_vibrant_alien_landscape_with_purple_mountains__a_glowing_river__and_two_moons_in_the_sky.â_____-_1051984488_(1)-transformed.jpeg",
+      "timestamp": "2025-06-19T13:58:05.229864",
+      "read": true,
+      "clientUploadId": "upload-1750321685182-8lddr",
+      "replied_to_id": null,
+      "replied_to_message_details": null
+    },
+    {
+      "id": "7da7e8f5-6bdc-4175-b913-1f96776aef4f",
+      "sender": "admin",
+      "sender_name": "admin",
+      "receiver": "chamika",
+      "message": "dd",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-19T13:58:12.152156",
+      "read": true,
+      "clientUploadId": null,
+      "replied_to_id": null,
+      "replied_to_message_details": null
     }
   ],
   "Ishan_johndoe2": [

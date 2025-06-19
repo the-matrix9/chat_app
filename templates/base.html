@@ -212,7 +212,7 @@
     </style>
 </head>
 {# Determine body class based on template context variable 'page_style' #}
-<body {% if page_style == 'chat_whatsapp_look' %}class="chat-page-style"{% endif %}>
+<body class="{% if page_style == 'chat_whatsapp_look' %}chat-page-style{% elif page_style == 'profile_full_screen' %}profile-page-active{% endif %}">
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <div class="flash-messages">
@@ -223,14 +223,15 @@
         {% endif %}
     {% endwith %}
 
-    {% if page_style != 'chat_whatsapp_look' %}
+    {# Conditionally wrap content based on page_style to avoid double .container/.card for full-screen pages #}
+    {% if page_style != 'chat_whatsapp_look' and page_style != 'profile_full_screen' %}
     <div class="container">
         <div class="card">
     {% endif %}
 
     {% block content %}{% endblock %}
 
-    {% if page_style != 'chat_whatsapp_look' %}
+    {% if page_style != 'chat_whatsapp_look' and page_style != 'profile_full_screen' %}
         </div> {# Closes .card #}
     </div> {# Closes .container #}
     {% endif %}

@@ -227,7 +227,8 @@ def profile():
     try:
         users = load_json(USERS_FILE)
         user_data = users.get(session['username'], {})
-        return render_template('profile.html', user=user_data, username=session['username'])
+        # Add a variable to indicate that the profile page specific body class should be active
+        return render_template('profile.html', user=user_data, username=session['username'], page_style='profile_full_screen')
     except Exception as e:
         logger.error(f"Profile route error: {e}")
         flash('Error loading profile. Please try again.')

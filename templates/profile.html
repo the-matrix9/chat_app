@@ -170,14 +170,35 @@
 
     /* Responsive adjustments */
     @media (max-width: 768px) {
-        .profile-page-wrapper { 
-            padding: 0; /* Remove padding for full screen on mobile */
+        /* Ensure html and body take full height and prevent scrolling for app-like feel */
+        html, body.profile-page-active { /* Added .profile-page-active to body for specificity */
+            height: 100%;
+            overflow: hidden !important;
         }
+
+        /* Make the wrapper fill the viewport and allow internal scrolling if needed */
+        .profile-page-wrapper { 
+            padding: 0 !important; 
+            margin: 0 !important;
+            max-width: none !important;
+            height: 100vh !important; /* Full viewport height */
+            display: flex !important; /* To allow card to fill it */
+            flex-direction: column !important; /* Ensure it stacks correctly */
+            overflow-y: auto; /* Allow vertical scrolling for content within wrapper */
+        }
+
         .profile-main-card { 
-            border-radius: 0; 
-            box-shadow: none; 
-            margin: 0; /* Card takes full space in wrapper on mobile */
-            /* height: 100%; /* Let content define height, wrapper handles scroll */
+            border-radius: 0 !important; 
+            box-shadow: none !important; 
+            margin: 0 !important; /* Card takes full space in wrapper on mobile */
+            flex: 1 !important; /* Card fills the .profile-page-wrapper */
+            display: flex !important;
+            flex-direction: column !important;
+            /* overflow: hidden; /* Let wrapper handle scroll, card content might need to scroll */
+        }
+        .profile-content-area {
+            flex-grow: 1; /* Allow content area to take up space and enable scrolling if needed */
+            overflow-y: auto; /* Allow scrolling within the content area if it overflows */
         }
         .profile-page-header { padding: 15px; border-radius:0; flex-direction: column; gap: 10px; }
         .profile-page-header h1 { font-size: 18px; }

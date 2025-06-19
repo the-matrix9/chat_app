@@ -360,6 +360,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-shrink: 0; /* Prevent shrinking */
 }
 
 .user-info {
@@ -457,6 +458,7 @@
     padding: 20px;
     overflow-y: auto;
     background: #f5f5f5;
+    min-height: 0; /* Allow shrinking below content size for scroll */
 }
 
 .message-bubble img,
@@ -711,6 +713,7 @@
     align-items: center; /* Align items to center for the row layout */
     gap: 8px; /* Reduced gap for mobile */
     flex-wrap: nowrap; /* Prevent wrapping of main items by default */
+    flex-shrink: 0; /* Prevent shrinking */
 }
 
 /* When reply preview is active, change to column layout */
@@ -1890,18 +1893,25 @@ function addMessageToChat(message) {
             break;
     }
 
-    messageDiv.innerHTML = `
+    const messageBubbleHtml = `
         <div class="message-bubble">
             ${repliedMessagePreviewHtml}
             <div class="message-content">${messageContentHtml}</div>
             <div class="message-time">${time}</div>
             ${message.sender === currentUser ? `<div class="message-status">${readStatus}</div>` : ''}
-        </div>
+        </div>`;
+
+    const messageActionsHtml = `
         <div class="message-actions">
             <button class="message-action-btn" onclick="startReply('${message.id}')" title="Reply"><i class="fas fa-reply"></i></button>
             ${message.sender === currentUser ? `<button class="message-action-btn" onclick="deleteMessage('${message.id}')" title="Delete"><i class="fas fa-trash"></i></button>` : ''}
-        </div>
-    `;
+        </div>`;
+
+    if (message.sender === currentUser) { // Sent message
+        messageDiv.innerHTML = messageActionsHtml + messageBubbleHtml;
+    } else { // Received message
+        messageDiv.innerHTML = messageBubbleHtml + messageActionsHtml;
+    }
     
     container.appendChild(messageDiv);
 

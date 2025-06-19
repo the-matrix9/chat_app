@@ -4,7 +4,7 @@
     "name": "chamika",
     "profile_photo": "https://i.ibb.co/KcGq4Tz7/20250522-235239-jpg.jpg",
     "status": "online",
-    "last_seen": "2025-06-19T13:53:25.414440",
+    "last_seen": "2025-06-19T13:57:41.105149",
     "created_at": "2025-06-17T14:47:14.951492",
     "bio": "im the admin"
   },
@@ -20,8 +20,8 @@
     "password": "pbkdf2:sha256:600000$6C62TxWQXiNMWqp5$df0832e3da2ffc54f502e8312cbec83be041209209c3ae1c06e72d673cd8f192",
     "name": "admin",
     "profile_photo": "https://i.ibb.co/jPMxhKBJ/486620158-2146024992529615-1443231713192352518-n-jpg.jpg",
-    "status": "online",
-    "last_seen": "2025-06-19T13:53:32.341589",
+    "status": "offline",
+    "last_seen": "2025-06-19T14:33:03.780407",
     "created_at": "2025-06-17T09:48:58.636768",
     "bio": "hey guys"
   },
