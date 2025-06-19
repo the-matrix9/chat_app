@@ -667,7 +667,7 @@
       "type": "text",
       "original_filename": null,
       "timestamp": "2025-06-19T13:24:04.129690",
-      "read": false,
+      "read": true,
       "clientUploadId": null,
       "replied_to_id": "623c79e7-a8ae-4182-873e-f22af82066b9",
       "replied_to_message_details": {

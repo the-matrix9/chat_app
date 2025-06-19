@@ -123,13 +123,20 @@
         display: block; margin-bottom: 8px; font-weight: 500; color: #3b4a54; font-size: 14px;
     }
     .profile-section .form-group input[type="text"],
+    .profile-section .form-group textarea,
     .profile-section .form-group input[type="file"] {
         width: 100%; padding: 10px 12px; border: 1px solid #d0d2d3;
         border-radius: 3px; font-size: 15px; box-sizing: border-box;
         transition: border-color 0.2s, box-shadow 0.2s;
+        font-family: inherit; /* Ensure textarea uses the same font */
     }
-    .profile-section .form-group input[type="text"]:focus {
+    .profile-section .form-group input[type="text"]:focus,
+    .profile-section .form-group textarea:focus {
         outline: none; border-color: #00a884; box-shadow: 0 0 0 1px #00a884;
+    }
+    .profile-section .form-group textarea {
+        resize: vertical; /* Allow vertical resize, disable horizontal */
+        min-height: 80px; /* Minimum height for textarea */
     }
     .profile-section .form-group input[type="file"] {
         padding: 8px 12px; background: #f0f2f5;
@@ -215,6 +222,11 @@
                     <div class="form-group">
                         <label for="name">Display Name</label>
                         <input type="text" id="name" name="name" value="{{ user.name or username }}" required maxlength="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <textarea id="bio" name="bio" rows="3" maxlength="200" placeholder="Tell us a little about yourself...">{{ user.bio or '' }}</textarea>
+                        <small class="form-help">Max 200 characters.</small>
                     </div>
                     <div class="form-group">
                         <label for="profile_photo">Change Profile Photo</label>

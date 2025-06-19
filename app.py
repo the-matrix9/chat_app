@@ -162,7 +162,8 @@ def register():
                 'profile_photo': '',
                 'status': 'offline',
                 'last_seen': get_current_time(),
-                'created_at': get_current_time()
+                'created_at': get_current_time(),
+                'bio': ''  # Add default empty bio
             }
             
             save_json(USERS_FILE, users)
@@ -237,14 +238,20 @@ def profile():
 def update_profile():
     username = session['username']
     name = request.form.get('name', '').strip()
+    bio = request.form.get('bio', '').strip() # Get bio from form
     
     if not name or len(name) > 100:
         flash('Name must be between 1 and 100 characters.')
         return redirect(url_for('profile'))
     
+    if len(bio) > 200: # Optional: Add a length limit for bio
+        flash('Bio cannot exceed 200 characters.')
+        return redirect(url_for('profile'))
+        
     try:
         users = load_json(USERS_FILE)
         users[username]['name'] = name
+        users[username]['bio'] = bio # Save bio
         
         # Handle profile photo upload
         if 'profile_photo' in request.files:
@@ -439,6 +446,25 @@ def search_users():
     except Exception as e:
         logger.error(f"Search users API error: {e}")
         return jsonify({'error': 'Search failed'}), 500
+
+@app.route('/api/user_details/<username>')
+@login_required
+def get_user_details(username):
+    try:
+        users = load_json(USERS_FILE)
+        if username in users:
+            user_data = users[username].copy()  # Create a copy to avoid modifying original
+            # Remove sensitive information like password hash before sending
+            user_data.pop('password', None)
+            # Ensure bio field exists, provide default if not
+            if 'bio' not in user_data:
+                user_data['bio'] = "No bio available."
+            return jsonify({'success': True, 'user': user_data})
+        else:
+            return jsonify({'success': False, 'error': 'User not found'}), 404
+    except Exception as e:
+        logger.error(f"Get user details API error for {username}: {e}")
+        return jsonify({'success': False, 'error': 'Failed to load user details'}), 500
 
 @app.route('/api/messages/<chat_with>')
 @login_required

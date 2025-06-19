@@ -677,6 +677,20 @@
         "type": "text",
         "original_filename": null
       }
+    },
+    {
+      "id": "925f5a45-21f1-42d3-9f42-8c092d7a6c24",
+      "sender": "chamika",
+      "sender_name": "chamika",
+      "receiver": "admin",
+      "message": "hdh",
+      "type": "text",
+      "original_filename": null,
+      "timestamp": "2025-06-19T13:44:36.040732",
+      "read": false,
+      "clientUploadId": null,
+      "replied_to_id": null,
+      "replied_to_message_details": null
     }
   ],
   "Ishan_johndoe2": [

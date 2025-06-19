@@ -30,7 +30,7 @@
                         <button class="btn-icon back-btn" id="backToUsersList" title="Back to users">
                             <i class="fas fa-arrow-left"></i>
                         </button>
-                        <img src="" alt="" class="user-avatar" id="chatUserAvatar">
+                        <img src="" alt="" class="user-avatar" id="chatUserAvatar" style="cursor: pointer;">
                         <div>
                             <div class="user-name" id="chatUserName"></div>
                             <div class="user-status" id="chatUserStatus"></div>
@@ -131,6 +131,25 @@
     <img class="image-preview-content" id="previewImage">
     <div id="imagePreviewCaption" class="image-preview-caption"></div>
 </div>
+
+<!-- User Profile Detail Modal -->
+<div id="userProfileDetailModal" class="profile-detail-modal" style="display: none;">
+    <div class="profile-detail-modal-content">
+        <span class="close-profile-detail-btn" onclick="closeUserProfileDetailModal()">&times;</span>
+        <div class="profile-detail-header">
+            <img src="/static/default_avatar_new.png" alt="User Avatar" id="modalUserProfileAvatar" class="profile-detail-avatar">
+        </div>
+        <div class="profile-detail-body">
+            <h3 id="modalUserProfileName">User Name</h3>
+            <p id="modalUserProfileUsername">@username</p>
+            <p id="modalUserProfileBio">Bio will appear here.</p>
+            <p>Status: <span id="modalUserProfileStatus">Offline</span></p>
+            <p>Last Seen: <span id="modalUserProfileLastSeen">N/A</span></p>
+            <!-- Add more fields as needed -->
+        </div>
+    </div>
+</div>
+
 
 <style>
 /* Mobile-specific overrides for base.html elements to allow full-screen chat */
@@ -921,6 +940,111 @@
     text-align: center; /* Center the image */
 }
 
+/* User Profile Detail Modal Styles */
+.profile-detail-modal {
+    display: none;
+    position: fixed;
+    z-index: 2500; /* Above chat, below image preview if needed, or adjust */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    display: flex; /* For centering content */
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-detail-modal-content {
+    background-color: #fff;
+    margin: auto;
+    padding: 0; /* Remove padding, header will have its own */
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px; /* Max width for the modal */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    overflow: hidden; /* To ensure border-radius clips children */
+    animation: fadeInProfileModal 0.3s ease-out;
+}
+
+@keyframes fadeInProfileModal {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.profile-detail-header {
+    background-color: #f0f0f0; /* Light grey background for header */
+    padding: 20px;
+    text-align: center;
+    position: relative; /* For close button positioning */
+}
+
+.profile-detail-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 10px; /* Space below avatar if name is in header */
+}
+
+.close-profile-detail-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #555;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-profile-detail-btn:hover,
+.close-profile-detail-btn:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+.profile-detail-body {
+    padding: 20px;
+    text-align: left;
+}
+
+.profile-detail-body h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 1.8em;
+    color: #333;
+    text-align: center;
+}
+
+.profile-detail-body p {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+.profile-detail-body p strong {
+    color: #333;
+}
+#modalUserProfileUsername {
+    text-align: center;
+    color: #777;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+#modalUserProfileBio {
+    font-style: italic;
+    color: #666;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+
 .image-preview-content {
     margin: auto;
     display: block;
@@ -1040,6 +1164,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Attach file button
     document.getElementById('attachFileBtn').addEventListener('click', () => {
         document.getElementById('mediaFile').click();
+    });
+
+    // Click listener for chat user avatar to open profile detail modal
+    document.getElementById('chatUserAvatar').addEventListener('click', () => {
+        if (currentChatUser) {
+            openUserProfileDetailModal(currentChatUser);
+        }
     });
 
     // Handle file selection
@@ -2253,14 +2384,51 @@ function scrollToBottom() {
 }
 
 // Close emoji picker when clicking outside
-document.addEventListener('click', function(e) {
+    document.addEventListener('click', function(e) {
     const picker = document.getElementById('emojiPicker');
     const emojiBtn = document.querySelector('.emoji-btn');
     
     if (picker && emojiBtn && !picker.contains(e.target) && !emojiBtn.contains(e.target)) {
         picker.style.display = 'none';
     }
+
+    // Close profile detail modal if clicked outside
+    const profileDetailModal = document.getElementById('userProfileDetailModal');
+    if (profileDetailModal && event.target === profileDetailModal) {
+        closeUserProfileDetailModal();
+    }
 });
+
+// User Profile Detail Modal Functions
+function openUserProfileDetailModal(username) {
+    fetch(`/api/user_details/${username}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const user = data.user;
+                document.getElementById('modalUserProfileAvatar').src = user.profile_photo || '/static/default_avatar_new.png';
+                document.getElementById('modalUserProfileName').textContent = user.name || 'N/A';
+                document.getElementById('modalUserProfileUsername').textContent = `@${user.username}`;
+                document.getElementById('modalUserProfileBio').textContent = user.bio || 'No bio available.';
+                document.getElementById('modalUserProfileStatus').textContent = user.status === 'online' ? 'Online' : 'Offline';
+                document.getElementById('modalUserProfileLastSeen').textContent = user.status === 'online' ? 'Currently Active' : (user.last_seen ? formatLastSeen(user.last_seen) : 'N/A');
+                
+                document.getElementById('userProfileDetailModal').style.display = 'flex';
+            } else {
+                console.error('Failed to load user details:', data.error);
+                alert('Could not load user details.');
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching user details:', error);
+            alert('Error fetching user details. Please try again.');
+        });
+}
+
+function closeUserProfileDetailModal() {
+    document.getElementById('userProfileDetailModal').style.display = 'none';
+}
+
 </script>
 
 {% endblock %}
